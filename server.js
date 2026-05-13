@@ -87,13 +87,12 @@ app.post('/ask-ai', async (req, res) => {
       return res.json({ reply, used: 'deepseek' });
     } catch (err) {
       console.warn('DeepSeek başarısız, Groq deneniyor:', err.message);
-      // DeepSeek başarısızsa Groq'ya geç
     }
   }
 
   // Groq API dene
   if (!GROQ_API_KEY) {
-    return res.status(500).json({ error: 'Hiçbir API anahtarı tanımlı değil. Lütfen DEEPSEEK_API_KEY veya GROQ_API_KEY ekleyin.' });
+    return res.status(500).json({ error: 'Hiçbir API anahtarı tanımlı değil.' });
   }
 
   try {
@@ -129,26 +128,44 @@ async function callDeepSeek(messages) {
 }
 
 async function callGroq(messages) {
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GROQ_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: 'mixtral-8x7b-32768',       // veya 'llama-3.3-70b-versatile'
-      messages,
-      temperature: 0.8,
-      max_tokens: 2000
-    }),
-    timeout: 30000
-  });
+  // Güncel Groq modelleri (sırasıyla dene)
+  const models = [
+    'llama-3.3-70b-versatile',
+    'gemma2-9b-it',
+    'llama-3.1-8b-instant'
+  ];
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error?.message || `Groq API hatası (${response.status})`);
+  let lastError = null;
+
+  for (const model of models) {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          temperature: 0.8,
+          max_tokens: 2000
+        }),
+        timeout: 30000
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error?.message || `Groq API hatası (${response.status})`);
+      }
+      return data.choices[0].message.content;
+    } catch (err) {
+      console.warn(`Groq model ${model} başarısız:`, err.message);
+      lastError = err;
+    }
   }
-  return data.choices[0].message.content;
+
+  throw lastError || new Error('Tüm Groq modelleri başarısız oldu.');
 }
 
 app.listen(PORT, () => {
