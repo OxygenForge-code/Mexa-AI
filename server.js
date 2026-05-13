@@ -5,21 +5,19 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
-// CORS ve JSON desteği
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
 app.use(cors());
 app.use(express.json());
-
-// Statik dosyaları public klasöründen sun
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ana sayfa
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// 1) Site içeriğini çek
+// Site içeriğini çek
 app.post('/fetch-site', async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: 'URL gerekli.' });
@@ -48,7 +46,7 @@ app.post('/fetch-site', async (req, res) => {
   }
 });
 
-// 2) Dosya çek (script.js, style.css)
+// Dosya çek
 app.post('/fetch-file', async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: 'Dosya URL’si gerekli.' });
@@ -75,47 +73,84 @@ app.post('/fetch-file', async (req, res) => {
   }
 });
 
-// 3) DeepSeek API
+// Ana sohbet endpoint'i (DeepSeek -> Groq fallback)
 app.post('/ask-ai', async (req, res) => {
-  if (!DEEPSEEK_API_KEY) {
-    return res.status(500).json({ error: 'API anahtarı sunucuda tanımlı değil.' });
-  }
-
   const { messages } = req.body;
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: 'Mesaj dizisi gerekli.' });
   }
 
-  try {
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages,
-        temperature: 0.8,
-        max_tokens: 2000
-      }),
-      timeout: 30000
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || `API hatası (${response.status})`);
+  // Önce DeepSeek'i dene
+  if (DEEPSEEK_API_KEY) {
+    try {
+      const reply = await callDeepSeek(messages);
+      return res.json({ reply, used: 'deepseek' });
+    } catch (err) {
+      console.warn('DeepSeek başarısız, Groq deneniyor:', err.message);
+      // DeepSeek başarısızsa Groq'ya geç
     }
+  }
 
-    res.json({ reply: data.choices[0].message.content });
-  } catch (error) {
-    console.error('/ask-ai hatası:', error.message);
-    res.status(500).json({ error: error.message || 'Sunucu hatası' });
+  // Groq API dene
+  if (!GROQ_API_KEY) {
+    return res.status(500).json({ error: 'Hiçbir API anahtarı tanımlı değil. Lütfen DEEPSEEK_API_KEY veya GROQ_API_KEY ekleyin.' });
+  }
+
+  try {
+    const reply = await callGroq(messages);
+    res.json({ reply, used: 'groq' });
+  } catch (err) {
+    console.error('Groq hatası:', err.message);
+    res.status(500).json({ error: `Groq API hatası: ${err.message}` });
   }
 });
 
-// Sunucuyu başlat
+async function callDeepSeek(messages) {
+  const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages,
+      temperature: 0.8,
+      max_tokens: 2000
+    }),
+    timeout: 30000
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error?.message || `DeepSeek API hatası (${response.status})`);
+  }
+  return data.choices[0].message.content;
+}
+
+async function callGroq(messages) {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${GROQ_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'mixtral-8x7b-32768',       // veya 'llama-3.3-70b-versatile'
+      messages,
+      temperature: 0.8,
+      max_tokens: 2000
+    }),
+    timeout: 30000
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error?.message || `Groq API hatası (${response.status})`);
+  }
+  return data.choices[0].message.content;
+}
+
 app.listen(PORT, () => {
   console.log(`✅ Mexa AI http://localhost:${PORT} adresinde çalışıyor.`);
 });
