@@ -9,112 +9,312 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0b0b1a;
-      color: #e1e1e1;
+      background: radial-gradient(ellipse at 40% 30%, #1e1b4b 0%, #0a0a1a 70%);
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 18px;
     }
+
     #app {
       width: 100%;
       max-width: 880px;
-      height: 100vh;
+      height: 92vh;
+      background: rgba(12, 11, 28, 0.75);
+      backdrop-filter: blur(32px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 38px;
       display: flex;
       flex-direction: column;
-      background: #0f0f23;
-      box-shadow: 0 0 60px rgba(100, 100, 255, 0.12);
+      overflow: hidden;
+      box-shadow: 0 35px 70px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      transition: all 0.3s ease;
     }
+
+    /* Üst çubuk */
     .topbar {
       display: flex;
       align-items: center;
-      padding: 16px 24px;
-      background: #12122a;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 24px;
+      background: rgba(18, 16, 44, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
+
     .logo {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #b794f4, #7f5af0);
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-right: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .status {
+
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.5);
+      animation: float 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-4px) rotate(3deg); }
+    }
+
+    .status-badge {
+      background: rgba(124, 58, 237, 0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
       font-size: 0.8rem;
-      color: #a0a0c0;
+      font-weight: 500;
+      color: #c4b5fd;
+      border: 1px solid rgba(124, 58, 237, 0.4);
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .status-dot {
+
+    .pulse {
       width: 8px; height: 8px;
       background: #10b981;
       border-radius: 50%;
       animation: pulse 2s infinite;
     }
+
     @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; box-shadow: 0 0 8px #10b981; }
-      100% { opacity: 0.6; }
+      0% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 12px #10b981; }
+      100% { opacity: 0.6; transform: scale(0.9); }
     }
+
+    /* Sohbet alanı */
     .chat-container {
       flex: 1;
       overflow-y: auto;
-      padding: 24px;
+      padding: 22px 24px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
+
+    .chat-container::-webkit-scrollbar { width: 5px; }
+    .chat-container::-webkit-scrollbar-track { background: transparent; }
+    .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+
+    /* Mesaj balonları */
     .message {
       display: flex;
       gap: 12px;
-      animation: fadeUp 0.35s ease;
+      animation: slideUp 0.4s cubic-bezier(0.21, 1.02, 0.73, 1);
     }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .message.user { justify-content: flex-end; }
+
     .avatar {
       width: 36px; height: 36px;
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       flex-shrink: 0;
+      background: rgba(255,255,255,0.08);
     }
-    .assistant .avatar { background: #2d2d5e; }
-    .user .avatar { background: #4a3b8b; }
+
     .bubble {
-      max-width: 70%;
+      max-width: 75%;
       padding: 14px 20px;
-      border-radius: 18px;
+      border-radius: 20px;
       line-height: 1.6;
       font-size: 0.95rem;
       word-wrap: break-word;
     }
+
     .assistant .bubble {
-      background: #1a1a33;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-bottom-left-radius: 4px;
+      background: rgba(30, 27, 62, 0.8);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-bottom-left-radius: 6px;
+      backdrop-filter: blur(12px);
     }
+
     .user .bubble {
-      background: #3b2b6b;
-      border-bottom-right-radius: 4px;
-      color: #fff;
+      background: linear-gradient(135deg, #6d28d9, #4c1d95);
+      color: white;
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 6px 16px rgba(109, 40, 217, 0.4);
     }
-    .bubble a { color: #b794f4; }
-    .bubble p { margin: 0.5em 0; }
+
+    .bubble a { color: #c4b5fd; text-decoration: underline; }
+
+    /* Analiz süreci kartı */
+    .analysis-card {
+      background: rgba(20, 17, 48, 0.9);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin: 10px 0;
+      backdrop-filter: blur(16px);
+      animation: glowPulse 2s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 12px rgba(167, 139, 250, 0.15); }
+      100% { box-shadow: 0 0 24px rgba(167, 139, 250, 0.35); }
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      opacity: 0.6;
+      transition: all 0.4s;
+    }
+
+    .step-item.active {
+      opacity: 1;
+      font-weight: 500;
+      color: #e0e0ff;
+    }
+
+    .step-item.completed {
+      opacity: 0.9;
+      color: #a5b4fc;
+    }
+
+    .step-item.error {
+      opacity: 0.8;
+      color: #fca5a5;
+    }
+
+    .step-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .step-item.active .step-icon {
+      background: rgba(139, 92, 246, 0.5);
+      animation: iconBlink 1s infinite;
+    }
+
+    .step-item.completed .step-icon {
+      background: rgba(16, 185, 129, 0.3);
+    }
+
+    .step-item.error .step-icon {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    @keyframes iconBlink {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.6); }
+      50% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      margin: 10px 0 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    /* Giriş alanı */
+    .input-area {
+      padding: 16px 24px 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(18, 16, 44, 0.6);
+      display: flex;
+      gap: 10px;
+    }
+
+    textarea {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 14px 18px;
+      resize: none;
+      color: white;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      max-height: 120px;
+      transition: 0.25s;
+    }
+
+    textarea:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      border: none;
+      width: 48px; height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.5);
+    }
+
+    .send-btn:hover {
+      background: #8b5cf6;
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.7);
+    }
+
     .action-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 10px;
     }
+
     .action-chip {
       background: rgba(123, 97, 255, 0.15);
       border: 1px solid rgba(123, 97, 255, 0.4);
@@ -123,82 +323,47 @@
       border-radius: 20px;
       font-size: 0.8rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s;
+      backdrop-filter: blur(8px);
     }
+
     .action-chip:hover {
       background: #7b61ff;
       color: white;
+      box-shadow: 0 0 16px rgba(123, 97, 255, 0.5);
     }
-    .typing-bubble {
-      display: flex;
-      gap: 4px;
-      padding: 8px;
+
+    .footer-note {
+      text-align: center;
+      padding: 4px 0 8px;
+      font-size: 0.7rem;
+      color: #4b5563;
     }
-    .typing-bubble span {
-      width: 8px; height: 8px;
-      background: #7f5af0;
-      border-radius: 50%;
-      animation: wave 1.2s infinite;
-    }
-    .typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes wave {
-      0%,60%,100% { transform: translateY(0); }
-      30% { transform: translateY(-8px); }
-    }
-    .input-area {
-      padding: 16px 24px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      background: #12122a;
-      display: flex;
-      gap: 10px;
-    }
-    .input-area textarea {
-      flex: 1;
-      background: #1a1a33;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 14px 18px;
-      resize: none;
-      color: white;
-      font-family: inherit;
-      font-size: 0.95rem;
-      outline: none;
-      max-height: 120px;
-    }
-    .input-area textarea:focus {
-      border-color: #7b61ff;
-      box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.2);
-    }
-    .send-btn {
-      background: #7b61ff;
-      border: none;
-      width: 48px; height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.2s;
-      color: white;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-    .send-btn:hover { background: #9b8aff; }
-    .send-btn:active { transform: scale(0.96); }
   </style>
 </head>
 <body>
   <div id="app">
     <div class="topbar">
-      <div class="logo">🧠 Mexa AI</div>
-      <div class="status"><span class="status-dot"></span> Çevrimiçi</div>
+      <div class="logo">
+        <div class="logo-icon">🧠</div>
+        Mexa AI
+      </div>
+      <div class="status-badge"><span class="pulse"></span> Aktif</div>
     </div>
-    <div class="chat-container" id="chatContainer"></div>
+    <div class="chat-container" id="chatContainer">
+      <!-- Karşılama mesajı -->
+      <div class="message assistant">
+        <div class="avatar">🤖</div>
+        <div class="bubble">
+          👋 Merhaba! Ben <strong>Mexa AI</strong>. Bir web sitesi linki gönder, adım adım inceleyip detaylı analiz çıkarayım. Sohbet de edebiliriz.
+        </div>
+      </div>
+    </div>
     <div class="input-area">
-      <textarea id="userInput" rows="1" placeholder="Link yapıştır veya bir şey sor..."></textarea>
+      <textarea id="userInput" rows="1" placeholder="Bir link yapıştırın veya soru sorun..."></textarea>
       <button class="send-btn" id="sendBtn">➤</button>
     </div>
+    <div class="footer-note">Web siteleri için derin analiz · Mexa AI</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -207,9 +372,7 @@
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
-    // Hoş geldin mesajı
-    addMessage('assistant', "👋 Merhaba! Ben **Mexa AI**. Bana bir web sitesi linki gönder, içeriğini okuyayım, dosyalarını inceleyeyim. Doğrudan sohbet de edebiliriz.");
-
+    // Event listeners
     userInput.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
@@ -219,7 +382,8 @@
       userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
     });
 
-    function addMessage(role, content, actions = null) {
+    // Mesaj ekleme (yardımcı)
+    function addMessage(role, content, extraHtml = null) {
       const div = document.createElement('div');
       div.className = `message ${role}`;
       const avatar = document.createElement('div');
@@ -227,42 +391,45 @@
       avatar.textContent = role === 'assistant' ? '🤖' : '👤';
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
+      
       if (role === 'assistant') {
         bubble.innerHTML = marked.parse(content, { breaks: true });
       } else {
         bubble.textContent = content;
       }
-      if (actions) {
-        const row = document.createElement('div');
-        row.className = 'action-row';
-        actions.forEach(a => {
-          const chip = document.createElement('span');
-          chip.className = 'action-chip';
-          chip.textContent = a.label;
-          chip.onclick = a.handler;
-          row.appendChild(chip);
-        });
-        bubble.appendChild(row);
+
+      if (extraHtml) {
+        bubble.appendChild(extraHtml);
       }
+
       div.appendChild(avatar);
       div.appendChild(bubble);
       chatContainer.appendChild(div);
       chatContainer.scrollTop = chatContainer.scrollHeight;
+      return bubble;
     }
 
-    function showTyping() {
+    // Yazıyor göstergesi
+    function addTypingIndicator() {
       const div = document.createElement('div');
       div.className = 'message assistant';
       div.id = 'typingIndicator';
-      div.innerHTML = `<div class="avatar">🤖</div><div class="bubble"><div class="typing-bubble"><span></span><span></span><span></span></div></div>`;
+      div.innerHTML = `
+        <div class="avatar">🤖</div>
+        <div class="bubble" style="display:flex; gap:5px; padding:10px 16px;">
+          <span style="width:8px;height:8px;background:#a78bfa;border-radius:50%;animation:wave 1.2s infinite;"></span>
+          <span style="width:8px;height:8px;background:#a78bfa;border-radius:50%;animation:wave 1.2s 0.2s infinite;"></span>
+          <span style="width:8px;height:8px;background:#a78bfa;border-radius:50%;animation:wave 1.2s 0.4s infinite;"></span>
+        </div>`;
       chatContainer.appendChild(div);
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    function hideTyping() {
+    function removeTypingIndicator() {
       document.getElementById('typingIndicator')?.remove();
     }
 
+    // API çağrısı
     async function api(endpoint, body) {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -270,78 +437,233 @@
         body: JSON.stringify(body)
       });
       let data;
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error('Sunucudan geçersiz yanıt alındı.');
-      }
-      if (!res.ok) {
-        throw new Error(data.error || `Hata (${res.status})`);
-      }
+      try { data = await res.json(); } catch { throw new Error('Sunucudan geçersiz yanıt.'); }
+      if (!res.ok) throw new Error(data.error || `Hata (${res.status})`);
       return data;
     }
 
+    // URL ayıklama
     function extractUrl(text) {
       const match = text.match(/(https?:\/\/[^\s]+)/gi);
       return match ? match[0] : null;
     }
 
+    // === ANALİZ SÜRECİ (Animasyonlu Adımlar) ===
+    async function performSiteAnalysis(url, userQuestion) {
+      // Analiz kartı oluştur
+      const analysisCard = document.createElement('div');
+      analysisCard.className = 'analysis-card';
+      analysisCard.innerHTML = `
+        <div style="font-weight:600; margin-bottom:8px; color:#c4b5fd;">🔍 Mexa Derin Analiz</div>
+        <div class="step-list" id="stepList">
+          <div class="step-item" data-step="connect">
+            <span class="step-icon">🌐</span>
+            <span>Siteye bağlanılıyor...</span>
+          </div>
+          <div class="step-item" data-step="html">
+            <span class="step-icon">📄</span>
+            <span>index.html okunuyor...</span>
+          </div>
+          <div class="step-item" data-step="css">
+            <span class="step-icon">🎨</span>
+            <span>style.css taranıyor...</span>
+          </div>
+          <div class="step-item" data-step="js">
+            <span class="step-icon">⚙️</span>
+            <span>script.js inceleniyor...</span>
+          </div>
+          <div class="step-item" data-step="ai">
+            <span class="step-icon">🧠</span>
+            <span>Yapay zeka analiz ediyor...</span>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+      `;
+
+      // Analiz kartını sohbete ekle
+      addMessage('assistant', '', analysisCard);
+      const stepList = document.getElementById('stepList');
+      const progressFill = document.getElementById('progressFill');
+      
+      // Adım güncelleme yardımcısı
+      function updateStep(stepName, status, text = null) {
+        const step = stepList.querySelector(`[data-step="${stepName}"]`);
+        if (!step) return;
+        step.classList.remove('active', 'completed', 'error');
+        step.classList.add(status);
+        if (text) step.querySelector('span:last-child').textContent = text;
+        // İkon güncellemesi
+        const iconMap = {
+          connect: status === 'completed' ? '✅' : status === 'error' ? '❌' : '🌐',
+          html: status === 'completed' ? '✅' : status === 'error' ? '❌' : '📄',
+          css: status === 'completed' ? '✅' : status === 'error' ? '⚠️' : '🎨',
+          js: status === 'completed' ? '✅' : status === 'error' ? '⚠️' : '⚙️',
+          ai: status === 'completed' ? '✅' : status === 'error' ? '❌' : '🧠'
+        };
+        step.querySelector('.step-icon').textContent = iconMap[stepName] || '⏳';
+      }
+
+      // Progress güncelleme
+      const progressSteps = { connect: 10, html: 30, css: 50, js: 70, ai: 90 };
+
+      try {
+        // Adım 1: Siteye bağlan
+        updateStep('connect', 'active');
+        progressFill.style.width = '5%';
+        await new Promise(r => setTimeout(r, 700));
+        
+        // Site içeriğini al
+        updateStep('connect', 'completed', 'Siteye bağlanıldı');
+        updateStep('html', 'active');
+        progressFill.style.width = '20%';
+        
+        const siteData = await api('/fetch-site', { url });
+        await new Promise(r => setTimeout(r, 400));
+        updateStep('html', 'completed', 'index.html okundu (' + siteData.content.length + ' karakter)');
+        progressFill.style.width = '40%';
+
+        // Adım 3: style.css kontrolü
+        updateStep('css', 'active');
+        progressFill.style.width = '50%';
+        let cssContent = null;
+        try {
+          const cssData = await api('/fetch-file', { url: url.replace(/\/$/, '') + '/style.css' });
+          cssContent = cssData.content;
+          await new Promise(r => setTimeout(r, 300));
+          updateStep('css', 'completed', 'style.css bulundu ve incelendi');
+        } catch (e) {
+          await new Promise(r => setTimeout(r, 300));
+          updateStep('css', 'error', 'style.css bulunamadı, atlandı');
+        }
+        progressFill.style.width = '60%';
+
+        // Adım 4: script.js kontrolü
+        updateStep('js', 'active');
+        progressFill.style.width = '70%';
+        let jsContent = null;
+        try {
+          const jsData = await api('/fetch-file', { url: url.replace(/\/$/, '') + '/script.js' });
+          jsContent = jsData.content;
+          await new Promise(r => setTimeout(r, 300));
+          updateStep('js', 'completed', 'script.js bulundu ve incelendi');
+        } catch (e) {
+          await new Promise(r => setTimeout(r, 300));
+          updateStep('js', 'error', 'script.js bulunamadı, atlandı');
+        }
+        progressFill.style.width = '80%';
+
+        // Adım 5: Yapay zeka analizi
+        updateStep('ai', 'active');
+        progressFill.style.width = '85%';
+        
+        // Derinlemesine analiz için prompt oluştur
+        let analysisPrompt = `Web sitesi detaylı analizi:\n\nURL: ${url}\n\n## Ana sayfa içeriği:\n${siteData.content}\n\n`;
+        if (cssContent) analysisPrompt += `## style.css içeriği:\n\`\`\`css\n${cssContent}\n\`\`\`\n\n`;
+        if (jsContent) analysisPrompt += `## script.js içeriği:\n\`\`\`javascript\n${jsContent}\n\`\`\`\n\n`;
+        
+        const question = userQuestion || 'Bu web sitesini kapsamlı şekilde analiz et. Tasarım, işlevsellik, içerik ve teknik açıdan değerlendir.';
+        
+        const { reply } = await api('/ask-ai', {
+          messages: [
+            { role: 'system', content: 'Sen Mexa AI, kapsamlı web analizi yapan bir asistansın. Site içeriğini, varsa CSS/JS dosyalarını inceleyerek detaylı, başlıklı, listeli bir analiz raporu sun. Türkçe yanıt ver.' },
+            { role: 'user', content: `${analysisPrompt}\n\nKullanıcı sorusu: ${question}` }
+          ]
+        });
+
+        updateStep('ai', 'completed', 'Yapay zeka analizi tamamlandı');
+        progressFill.style.width = '100%';
+        
+        await new Promise(r => setTimeout(r, 400));
+        
+        // Analiz kartını güncelle (tamamlandı bilgisi)
+        analysisCard.querySelector('div:first-child').textContent = '✅ Analiz Tamamlandı';
+        
+        // Sonucu ayrı bir mesaj olarak göster
+        addMessage('assistant', reply);
+
+        // İsteğe bağlı: tekrar butonları
+        const actionRow = document.createElement('div');
+        actionRow.className = 'action-row';
+        const retryCss = document.createElement('span');
+        retryCss.className = 'action-chip';
+        retryCss.textContent = '🎨 style.css detaylı';
+        retryCss.onclick = () => analyzeFile(url, '/style.css');
+        const retryJs = document.createElement('span');
+        retryJs.className = 'action-chip';
+        retryJs.textContent = '⚙️ script.js detaylı';
+        retryJs.onclick = () => analyzeFile(url, '/script.js');
+        const fullAnalysis = document.createElement('span');
+        fullAnalysis.className = 'action-chip';
+        fullAnalysis.textContent = '🔁 Yeniden analiz';
+        fullAnalysis.onclick = () => performSiteAnalysis(url, userQuestion);
+        
+        actionRow.appendChild(retryCss);
+        actionRow.appendChild(retryJs);
+        actionRow.appendChild(fullAnalysis);
+        
+        // Son mesajın balonuna ekle
+        const lastBubble = chatContainer.lastChild.querySelector('.bubble');
+        if (lastBubble) lastBubble.appendChild(actionRow);
+
+      } catch (err) {
+        updateStep('ai', 'error', 'Analiz başarısız: ' + err.message);
+        progressFill.style.width = '100%';
+        progressFill.style.background = '#ef4444';
+        analysisCard.querySelector('div:first-child').textContent = '❌ Analiz Başarısız';
+      }
+    }
+
+    // Tekil dosya analizi (butonlardan çağrılır)
+    async function analyzeFile(baseUrl, fileName) {
+      const fileUrl = baseUrl.replace(/\/$/, '') + fileName;
+      addTypingIndicator();
+      try {
+        const { content, type } = await api('/fetch-file', { url: fileUrl });
+        const { reply } = await api('/ask-ai', {
+          messages: [
+            { role: 'system', content: 'Sen bir kod analiz uzmanısın. Dosyayı inceleyip işlevini açıkla.' },
+            { role: 'user', content: `Dosya: ${fileName}\nTür: ${type}\n\`\`\`\n${content}\n\`\`\`\nBu dosyayı detaylı analiz et.` }
+          ]
+        });
+        removeTypingIndicator();
+        addMessage('assistant', `**📄 ${fileName} Detaylı Analizi:**\n\n${reply}`);
+      } catch (err) {
+        removeTypingIndicator();
+        addMessage('assistant', `⚠️ ${fileName} alınamadı: ${err.message}. Ana sayfa analizi yeterli olacaktır.`);
+      }
+    }
+
+    // Ana mesaj gönderme
     async function sendMessage() {
       const raw = userInput.value.trim();
       if (!raw) return;
       addMessage('user', raw);
       userInput.value = '';
       userInput.style.height = 'auto';
-      showTyping();
+      addTypingIndicator();
 
       try {
         const url = extractUrl(raw);
         if (url) {
-          const { content } = await api('/fetch-site', { url });
-          const question = raw.replace(url, '').trim() || 'Bu web sitesini detaylı özetle.';
-          const { reply } = await api('/ask-ai', {
-            messages: [
-              { role: 'system', content: 'Sen Mexa AI, web analiz uzmanısın. Türkçe yanıt ver.' },
-              { role: 'user', content: `Site içeriği:\n"""\n${content}\n"""\n\nSoru: ${question}` }
-            ]
-          });
-          hideTyping();
-          addMessage('assistant', reply, [
-            { label: '🔍 script.js incele', handler: () => analyzeFile(url, '/script.js') },
-            { label: '🎨 style.css incele', handler: () => analyzeFile(url, '/style.css') }
-          ]);
+          removeTypingIndicator();
+          const question = raw.replace(url, '').trim();
+          await performSiteAnalysis(url, question);
         } else {
+          // Normal sohbet
           const { reply } = await api('/ask-ai', {
             messages: [
               { role: 'system', content: 'Sen Mexa AI, yardımcı bir asistansın. Türkçe, samimi yanıt ver.' },
               { role: 'user', content: raw }
             ]
           });
-          hideTyping();
+          removeTypingIndicator();
           addMessage('assistant', reply);
         }
       } catch (err) {
-        hideTyping();
+        removeTypingIndicator();
         addMessage('assistant', `❌ **Hata:** ${err.message}`);
-      }
-    }
-
-    async function analyzeFile(baseUrl, fileName) {
-      const fileUrl = baseUrl.replace(/\/$/, '') + fileName;
-      showTyping();
-      try {
-        const { content, type } = await api('/fetch-file', { url: fileUrl });
-        const { reply } = await api('/ask-ai', {
-          messages: [
-            { role: 'system', content: 'Sen bir kod analiz uzmanısın. Dosyayı inceleyip işlevini açıkla.' },
-            { role: 'user', content: `Dosya: ${fileName}\nTür: ${type}\n\`\`\`\n${content}\n\`\`\`\nBu dosyayı analiz et.` }
-          ]
-        });
-        hideTyping();
-        addMessage('assistant', `**📄 ${fileName} Analizi:**\n\n${reply}`);
-      } catch (err) {
-        hideTyping();
-        addMessage('assistant', `⚠️ ${fileName} alınamadı: ${err.message}`);
       }
     }
   </script>
