@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Mexa AI – Derin Web Analiz Asistanı</title>
+  <title>Mexa AI – Derin Web Analiz & Canlı Kullanım</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
@@ -29,6 +29,7 @@
       --danger: #ef4444;
       --success: #10b981;
       --warning: #f59e0b;
+      --info: #3b82f6;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -82,7 +83,7 @@
     .topbar {
       display: flex;
       align-items: center;
-      padding: 12px 20px;
+      padding: 10px 20px;
       background: rgba(12, 12, 29, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
@@ -172,6 +173,7 @@
       transition: var(--transition);
       font-size: 0.9rem;
       flex-shrink: 0;
+      position: relative;
     }
 
     .btn-icon:hover {
@@ -186,7 +188,21 @@
       border-color: var(--accent);
     }
 
-    /* === ANA İÇERİK (Sohbet + Canlı Görünüm) === */
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 16px; height: 16px;
+      background: var(--danger);
+      border-radius: 50%;
+      font-size: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    /* === ANA İÇERİK === */
     .main-content {
       flex: 1;
       display: flex;
@@ -194,7 +210,6 @@
       min-height: 0;
     }
 
-    /* Sohbet paneli */
     .chat-panel {
       flex: 1;
       display: flex;
@@ -204,7 +219,7 @@
     }
 
     .chat-panel.collapsed {
-      flex: 0.4;
+      flex: 0.35;
     }
 
     .chat-container {
@@ -221,11 +236,11 @@
     .chat-container::-webkit-scrollbar-track { background: transparent; }
     .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 
-    /* Canlı görünüm paneli */
+    /* === CANLI GÖRÜNÜM PANELİ === */
     .live-panel {
       width: 0;
       overflow: hidden;
-      background: white;
+      background: #fff;
       transition: width 0.3s;
       display: flex;
       flex-direction: column;
@@ -233,35 +248,61 @@
     }
 
     .live-panel.open {
-      width: 50%;
+      width: 55%;
     }
 
     .live-panel-header {
-      padding: 10px 14px;
-      background: var(--bg-secondary);
+      padding: 8px 14px;
+      background: #1a1a2e;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 10px;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
+      flex-wrap: wrap;
     }
 
     .live-panel-title {
       font-size: 0.85rem;
       font-weight: 600;
-      color: var(--text-primary);
+      color: white;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
     .live-panel-url {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       max-width: 200px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      flex: 1;
+    }
+
+    .live-toolbar {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .live-toolbar button {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .live-toolbar button:hover {
+      background: rgba(255,255,255,0.2);
     }
 
     .live-iframe-container {
@@ -279,7 +320,7 @@
     .iframe-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -290,48 +331,86 @@
       padding: 20px;
     }
 
-    /* Form analiz kartı */
-    .form-analysis-card {
-      background: rgba(20, 17, 48, 0.9);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 16px;
-      padding: 14px;
+    .iframe-overlay i {
+      font-size: 3rem;
+      opacity: 0.5;
+    }
+
+    /* Form doldurma paneli */
+    .form-fill-panel {
+      background: rgba(20, 17, 48, 0.95);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 14px;
+      padding: 12px;
       margin: 8px 0;
     }
 
-    .form-analysis-title {
+    .form-fill-title {
       font-weight: 600;
-      color: var(--warning);
       font-size: 0.85rem;
+      color: var(--warning);
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 8px;
     }
 
-    .form-input-list {
+    .form-fill-inputs {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
-    .form-input-item {
+    .form-fill-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 10px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 8px;
-      font-size: 0.8rem;
     }
 
-    .form-input-item .input-type {
-      background: rgba(139, 92, 246, 0.2);
-      color: var(--accent-light);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
+    .form-fill-row label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      min-width: 80px;
+    }
+
+    .form-fill-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 6px 10px;
+      color: white;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .form-fill-row input:focus {
+      border-color: var(--accent);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .btn-fill {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-fill:hover {
+      background: #7c3aed;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+
+    .btn-clear {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-secondary);
     }
 
     /* Hoş geldin ekranı */
@@ -375,14 +454,14 @@
     .welcome-subtitle {
       color: var(--text-muted);
       font-size: 0.9rem;
-      max-width: 400px;
+      max-width: 450px;
     }
 
     .feature-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      max-width: 450px;
+      max-width: 500px;
       width: 100%;
       margin-top: 8px;
     }
@@ -391,13 +470,13 @@
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px;
+      padding: 14px;
       cursor: pointer;
       transition: var(--transition);
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
+      gap: 10px;
+      font-size: 0.85rem;
       color: var(--text-secondary);
     }
 
@@ -406,11 +485,14 @@
       border-color: var(--accent);
       color: var(--text-primary);
       transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
     .feature-card i {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: var(--accent-light);
+      width: 30px;
+      text-align: center;
     }
 
     /* Mesajlar */
@@ -499,11 +581,7 @@
       gap: 6px;
     }
 
-    .step-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .step-list { display: flex; flex-direction: column; gap: 6px; }
 
     .step-item {
       display: flex;
@@ -536,13 +614,8 @@
       box-shadow: 0 0 10px var(--accent-glow);
     }
 
-    .step-item.completed .step-dot {
-      background: rgba(16, 185, 129, 0.3);
-    }
-
-    .step-item.error .step-dot {
-      background: rgba(239, 68, 68, 0.3);
-    }
+    .step-item.completed .step-dot { background: rgba(16, 185, 129, 0.3); }
+    .step-item.error .step-dot { background: rgba(239, 68, 68, 0.3); }
 
     @keyframes dotPulse {
       0%, 100% { transform: scale(1); }
@@ -565,7 +638,6 @@
       transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Aksiyon butonları */
     .action-row {
       display: flex;
       flex-wrap: wrap;
@@ -599,7 +671,7 @@
     /* === GİRİŞ ALANI === */
     .input-container {
       flex-shrink: 0;
-      padding: 12px 20px 16px;
+      padding: 10px 20px 14px;
       background: rgba(12, 12, 29, 0.85);
       backdrop-filter: blur(20px);
       border-top: 1px solid var(--border);
@@ -663,7 +735,6 @@
 
     .send-btn:active { transform: scale(0.95); }
 
-    /* Yazıyor göstergesi */
     .typing-dots {
       display: flex; gap: 4px; padding: 4px 0;
     }
@@ -681,16 +752,42 @@
       30% { transform: translateY(-8px); }
     }
 
+    /* Bildirim toast */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      z-index: 200;
+      animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes toastOut {
+      from { opacity: 1; }
+      to { opacity: 0; transform: translateY(20px); }
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .live-panel.open { width: 100%; position: fixed; top: 0; left: 0; z-index: 50; height: 100vh; }
-      .msg-bubble { max-width: 85%; }
+      .msg-bubble { max-width: 88%; }
       .feature-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 8px 12px; }
+      .status-chip { display: none; }
     }
   </style>
 </head>
 <body>
-
   <div id="particles"></div>
 
   <div id="app">
@@ -704,6 +801,7 @@
         <span class="status-chip"><span class="status-dot"></span> Aktif</span>
         <button class="btn-icon" id="toggleLiveView" title="Canlı Görünüm"><i class="fa-solid fa-eye"></i></button>
         <button class="btn-icon" id="clearChat" title="Sohbeti Temizle"><i class="fa-solid fa-broom"></i></button>
+        <button class="btn-icon" id="exportChat" title="Dışa Aktar"><i class="fa-solid fa-download"></i></button>
       </div>
     </header>
 
@@ -715,7 +813,7 @@
           <div class="welcome-screen" id="welcomeScreen">
             <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
             <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
-            <div class="welcome-subtitle">Web sitelerini canlı görüntüle, formları analiz et, kodları incele ve sorularını sor.</div>
+            <div class="welcome-subtitle">Web sitelerini canlı görüntüle, formları doldur, giriş yap, kodları incele ve AI ile analiz et.</div>
             <div class="feature-grid">
               <div class="feature-card" onclick="quickAction('site')">
                 <i class="fa-solid fa-globe"></i> Site analizi
@@ -727,14 +825,20 @@
                 <i class="fa-solid fa-link"></i> Link gönder
               </div>
               <div class="feature-card" onclick="quickAction('form')">
-                <i class="fa-solid fa-keyboard"></i> Form tespiti
+                <i class="fa-solid fa-keyboard"></i> Form doldur
+              </div>
+              <div class="feature-card" onclick="quickAction('login')">
+                <i class="fa-solid fa-right-to-bracket"></i> Giriş yap
+              </div>
+              <div class="feature-card" onclick="quickAction('code')">
+                <i class="fa-solid fa-code"></i> Kodu incele
               </div>
             </div>
           </div>
         </div>
         <div class="input-container">
           <div class="input-wrapper">
-            <textarea id="userInput" rows="1" placeholder="Link yapıştır veya 'şu sitedeki login formunu bul' yaz..."></textarea>
+            <textarea id="userInput" rows="1" placeholder="Link yapıştır veya 'login formunu doldur' yaz..."></textarea>
           </div>
           <button class="send-btn" id="sendBtn"><i class="fa-solid fa-arrow-up"></i></button>
         </div>
@@ -743,14 +847,21 @@
       <!-- Canlı Görünüm Paneli -->
       <div class="live-panel" id="livePanel">
         <div class="live-panel-header">
-          <div class="live-panel-title"><i class="fa-solid fa-globe"></i> Canlı Görünüm</div>
+          <div class="live-panel-title"><i class="fa-solid fa-globe"></i> Canlı Site</div>
           <div class="live-panel-url" id="liveUrl"></div>
-          <button class="btn-icon" id="closeLiveView"><i class="fa-solid fa-xmark"></i></button>
+          <div class="live-toolbar">
+            <button title="Geri" id="iframeBack"><i class="fa-solid fa-arrow-left"></i></button>
+            <button title="İleri" id="iframeForward"><i class="fa-solid fa-arrow-right"></i></button>
+            <button title="Yenile" id="iframeRefresh"><i class="fa-solid fa-rotate"></i></button>
+            <button title="Yeni sekmede aç" id="iframeOpen"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button title="Kapat" id="closeLiveView"><i class="fa-solid fa-xmark"></i></button>
+          </div>
         </div>
         <div class="live-iframe-container" id="iframeContainer">
           <div class="iframe-overlay" id="iframeOverlay">
-            <i class="fa-solid fa-link" style="font-size: 2rem;"></i>
-            <p>Siteyi canlı görmek için bir link gönderin</p>
+            <i class="fa-solid fa-globe"></i>
+            <p>Siteyi canlı görmek ve kullanmak için bir link gönderin</p>
+            <p style="font-size:0.8rem;color:var(--text-muted)">Login formlarını doldurabilir, giriş yapabilirsiniz</p>
           </div>
         </div>
       </div>
@@ -760,7 +871,7 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     (function() {
-      // Arka plan
+      // Arka plan parçacıkları
       const particlesContainer = document.getElementById('particles');
       for (let i = 0; i < 45; i++) {
         const particle = document.createElement('div');
@@ -774,6 +885,7 @@
         particlesContainer.appendChild(particle);
       }
 
+      // Ana elementler
       const chatContainer = document.getElementById('chatContainer');
       const welcomeScreen = document.getElementById('welcomeScreen');
       const userInput = document.getElementById('userInput');
@@ -784,17 +896,18 @@
       const iframeOverlay = document.getElementById('iframeOverlay');
       const chatPanel = document.getElementById('chatPanel');
       let currentSiteData = null;
+      let currentIframe = null;
 
       function checkWelcomeScreen() {
         const messages = chatContainer.querySelectorAll('.message');
         welcomeScreen.style.display = messages.length === 0 ? 'flex' : 'none';
       }
 
-      // Canlı görünüm toggle
+      // === CANLI GÖRÜNÜM ===
       document.getElementById('toggleLiveView').addEventListener('click', () => {
         if (livePanel.classList.contains('open')) {
           closeLiveView();
-        } else if (currentSiteData) {
+        } else if (currentSiteData?.url) {
           openLiveView(currentSiteData.url);
         }
       });
@@ -805,53 +918,109 @@
         livePanel.classList.add('open');
         chatPanel.classList.add('collapsed');
         liveUrl.textContent = url;
+        document.getElementById('toggleLiveView').classList.add('active');
         
-        // iframe'i temizle
         iframeContainer.querySelector('iframe')?.remove();
         iframeOverlay.style.display = 'none';
         
-        const iframe = document.createElement('iframe');
-        iframe.src = url;
-        iframe.sandbox = 'allow-same-origin allow-scripts allow-forms';
-        iframe.onerror = () => {
-          iframeOverlay.style.display = 'flex';
-          iframeOverlay.innerHTML = '<i class="fa-solid fa-lock" style="font-size:2rem;"></i><p>Bu site iframe\'de görüntülenemiyor</p>';
-        };
-        iframeContainer.appendChild(iframe);
+        currentIframe = document.createElement('iframe');
+        currentIframe.src = url;
+        currentIframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox';
+        currentIframe.allow = 'geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb';
+        currentIframe.style.width = '100%';
+        currentIframe.style.height = '100%';
+        currentIframe.style.border = 'none';
+        
+        iframeContainer.appendChild(currentIframe);
+        showToast('Site canlı görünümde! Formları doldurabilir, giriş yapabilirsiniz.');
       }
 
       function closeLiveView() {
         livePanel.classList.remove('open');
         chatPanel.classList.remove('collapsed');
-        iframeContainer.querySelector('iframe')?.remove();
+        document.getElementById('toggleLiveView').classList.remove('active');
+        currentIframe?.remove();
+        currentIframe = null;
         iframeOverlay.style.display = 'flex';
       }
 
-      // Hızlı aksiyon
+      // İframe kontrolleri
+      document.getElementById('iframeBack').addEventListener('click', () => {
+        currentIframe?.contentWindow?.history?.back();
+      });
+      document.getElementById('iframeForward').addEventListener('click', () => {
+        currentIframe?.contentWindow?.history?.forward();
+      });
+      document.getElementById('iframeRefresh').addEventListener('click', () => {
+        if (currentIframe) {
+          currentIframe.src = currentIframe.src;
+        }
+      });
+      document.getElementById('iframeOpen').addEventListener('click', () => {
+        if (currentSiteData?.url) {
+          window.open(currentSiteData.url, '_blank');
+        }
+      });
+
+      // === HIZLI AKSİYONLAR ===
       window.quickAction = function(type) {
         const actions = {
-          site: 'Bir web sitesi analiz etmek istiyorum',
-          chat: 'Merhaba Mexa!',
+          site: 'Bir web sitesini analiz et https://',
+          chat: 'Merhaba Mexa! Neler yapabilirsin?',
           link: 'https://',
-          form: 'https:// sitesindeki login formunu analiz et'
+          form: 'https:// sitesindeki formları analiz et ve doldur',
+          login: 'https:// sitesindeki login formunu bul ve kullanıcı adı/şifre alanlarını söyle',
+          code: 'https:// sitesinin kodlarını detaylı incele'
         };
         userInput.value = actions[type] || '';
         userInput.focus();
       };
 
-      // Temizleme
+      // === TOAST ===
+      function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      // === SOHBETİ DIŞA AKTAR ===
+      document.getElementById('exportChat').addEventListener('click', () => {
+        const messages = [];
+        chatContainer.querySelectorAll('.message').forEach(msg => {
+          const bubble = msg.querySelector('.msg-bubble');
+          if (!bubble) return;
+          const role = msg.classList.contains('user') ? '👤 Kullanıcı' : '🤖 Mexa AI';
+          const text = bubble.textContent.trim();
+          if (text) messages.push(`${role}: ${text}`);
+        });
+        
+        const blob = new Blob([messages.join('\n\n')], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `mexa-ai-sohbet-${new Date().toISOString().slice(0,10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Sohbet dışa aktarıldı!');
+      });
+
+      // === TEMİZLEME ===
       document.getElementById('clearChat').addEventListener('click', () => {
         if (confirm('Tüm sohbet geçmişini sil?')) {
           chatContainer.innerHTML = `
             <div class="welcome-screen" id="welcomeScreen">
               <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
               <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
-              <div class="welcome-subtitle">Web sitelerini canlı görüntüle, formları analiz et, kodları incele ve sorularını sor.</div>
+              <div class="welcome-subtitle">Web sitelerini canlı görüntüle, formları doldur, giriş yap, kodları incele ve AI ile analiz et.</div>
               <div class="feature-grid">
                 <div class="feature-card" onclick="quickAction('site')"><i class="fa-solid fa-globe"></i> Site analizi</div>
                 <div class="feature-card" onclick="quickAction('chat')"><i class="fa-solid fa-comments"></i> Sohbet</div>
                 <div class="feature-card" onclick="quickAction('link')"><i class="fa-solid fa-link"></i> Link gönder</div>
-                <div class="feature-card" onclick="quickAction('form')"><i class="fa-solid fa-keyboard"></i> Form tespiti</div>
+                <div class="feature-card" onclick="quickAction('form')"><i class="fa-solid fa-keyboard"></i> Form doldur</div>
+                <div class="feature-card" onclick="quickAction('login')"><i class="fa-solid fa-right-to-bracket"></i> Giriş yap</div>
+                <div class="feature-card" onclick="quickAction('code')"><i class="fa-solid fa-code"></i> Kodu incele</div>
               </div>
             </div>`;
           localStorage.removeItem('mexa_chat_messages');
@@ -938,49 +1107,105 @@
         return match ? match[0] : null;
       }
 
-      // Form analiz kartı
-      function createFormAnalysisCard(forms, url) {
+      // === FORM DOLDURMA KARTI ===
+      function createFormFillCard(forms, url) {
         const card = document.createElement('div');
-        card.className = 'form-analysis-card';
+        card.className = 'form-fill-panel';
         
-        if (forms.length === 0) {
+        if (!forms || forms.length === 0) {
           card.innerHTML = `
-            <div class="form-analysis-title"><i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Form Tespiti</div>
-            <p style="font-size:0.82rem;color:var(--text-secondary);">Bu sayfada form bulunamadı.</p>`;
+            <div class="form-fill-title"><i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Form Tespiti</div>
+            <p style="font-size:0.82rem;color:var(--text-secondary);">Bu sayfada doldurulabilir form bulunamadı.</p>`;
           return card;
         }
 
-        let html = `<div class="form-analysis-title"><i class="fa-solid fa-triangle-exclamation"></i> ${forms.length} Form Tespit Edildi!</div>`;
+        let html = `<div class="form-fill-title"><i class="fa-solid fa-keyboard"></i> Form Doldurma Paneli (${forms.length} form)</div>`;
         
         forms.forEach((form, i) => {
-          html += `<div style="margin-bottom:8px;font-weight:600;font-size:0.8rem;color:var(--accent-light);">Form #${i+1} (${form.method.toUpperCase()})</div>`;
+          if (form.inputs.length === 0) return;
           
-          if (form.inputs.length > 0) {
-            html += '<div class="form-input-list">';
-            form.inputs.forEach(input => {
-              const isPassword = input.type === 'password';
-              const isSubmit = input.type === 'submit';
-              html += `
-                <div class="form-input-item">
-                  <span class="input-type">${input.type}</span>
-                  <span>${input.name || input.placeholder || '(isimsiz)'}</span>
-                  ${isPassword ? '<i class="fa-solid fa-lock" style="color:var(--warning);margin-left:auto;"></i>' : ''}
-                  ${isSubmit ? '<i class="fa-solid fa-paper-plane" style="color:var(--success);margin-left:auto;"></i>' : ''}
-                </div>`;
-            });
-            html += '</div>';
-          }
-
-          if (form.labels.length > 0) {
-            html += `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Etiketler: ${form.labels.join(', ')}</div>`;
-          }
+          html += `<div style="margin-bottom:10px;font-weight:600;font-size:0.8rem;color:var(--accent-light);">
+            <i class="fa-solid fa-window-maximize"></i> Form #${i+1} (${form.method.toUpperCase()})
+          </div>`;
+          html += '<div class="form-fill-inputs">';
+          
+          form.inputs.filter(inp => inp.type !== 'submit' && inp.type !== 'button' && inp.type !== 'hidden').forEach((input, j) => {
+            const isPassword = input.type === 'password';
+            const label = input.placeholder || input.name || `Alan ${j+1}`;
+            const inputId = `fill_${i}_${j}_${Date.now()}`;
+            html += `
+              <div class="form-fill-row">
+                <label>${isPassword ? '<i class="fa-solid fa-lock"></i> ' : '<i class="fa-solid fa-pen"></i> '}${label}</label>
+                <input type="${isPassword ? 'password' : 'text'}" id="${inputId}" placeholder="${label}" data-form="${i}" data-name="${input.name}" data-type="${input.type}">
+              </div>`;
+          });
+          
+          html += '</div>';
+          html += `
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              <button class="btn-sm btn-fill" onclick="window.fillForm(${i})"><i class="fa-solid fa-play"></i> Doldur ve Gönder</button>
+              <button class="btn-sm btn-clear" onclick="window.clearForm(${i})"><i class="fa-solid fa-eraser"></i> Temizle</button>
+            </div>`;
         });
 
         card.innerHTML = html;
         return card;
       }
 
-      // Ana analiz süreci
+      // Form doldurma fonksiyonları
+      window.fillForm = function(formIndex) {
+        if (!currentIframe) {
+          showToast('⚠️ Önce canlı görünümü açın!');
+          return;
+        }
+        
+        try {
+          const iframeDoc = currentIframe.contentDocument || currentIframe.contentWindow.document;
+          const forms = iframeDoc.querySelectorAll('form');
+          const form = forms[formIndex];
+          
+          if (!form) {
+            showToast('❌ Form bulunamadı!');
+            return;
+          }
+
+          // Paneldeki input değerlerini al ve formu doldur
+          const panelInputs = document.querySelectorAll(`[data-form="${formIndex}"]`);
+          panelInputs.forEach(panelInput => {
+            const name = panelInput.dataset.name;
+            const value = panelInput.value;
+            if (name && value) {
+              const formInput = form.querySelector(`[name="${name}"]`);
+              if (formInput) {
+                formInput.value = value;
+                formInput.dispatchEvent(new Event('input', { bubbles: true }));
+                formInput.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            }
+          });
+
+          showToast('✅ Form dolduruldu! Gönderiliyor...');
+          
+          // Submit butonunu bul ve tıkla
+          const submitBtn = form.querySelector('[type="submit"]') || form.querySelector('button');
+          if (submitBtn) {
+            submitBtn.click();
+            showToast('🚀 Form gönderildi! Ana sayfaya yönlendiriliyor...');
+          } else {
+            form.submit();
+          }
+        } catch (err) {
+          showToast('⚠️ Form doldurulamadı: ' + err.message);
+        }
+      };
+
+      window.clearForm = function(formIndex) {
+        const panelInputs = document.querySelectorAll(`[data-form="${formIndex}"]`);
+        panelInputs.forEach(input => input.value = '');
+        showToast('🗑️ Form temizlendi');
+      };
+
+      // === ANA ANALİZ SÜRECİ ===
       async function performSiteAnalysis(url, userQuestion) {
         const card = document.createElement('div');
         card.className = 'analysis-card';
@@ -1032,9 +1257,12 @@
           updateStep('forms', 'completed', `${formCount} form bulundu`);
           progressFill.style.width = '30%';
 
-          // Form analiz kartını göster
+          // Form doldurma kartını göster
           if (siteData.forms && siteData.forms.length > 0) {
-            addMessage('assistant', null, createFormAnalysisCard(siteData.forms, url));
+            addMessage('assistant', null, createFormFillCard(siteData.forms, url));
+            
+            // Otomatik canlı görünümü aç
+            openLiveView(url);
           }
 
           updateStep('html', 'active'); progressFill.style.width = '35%';
@@ -1070,30 +1298,31 @@
 
           updateStep('ai', 'active'); progressFill.style.width = '88%';
 
-          let prompt = `Web sitesi analizi:\n\nURL: ${url}\n\n`;
+          let prompt = `Web sitesi kapsamlı analizi:\n\nURL: ${url}\n`;
           if (siteData.meta?.title) prompt += `Başlık: ${siteData.meta.title}\n`;
           if (siteData.meta?.description) prompt += `Açıklama: ${siteData.meta.description}\n\n`;
           
           if (siteData.forms && siteData.forms.length > 0) {
             prompt += `## Tespit Edilen Formlar:\n`;
             siteData.forms.forEach((f, i) => {
-              prompt += `Form #${i+1} (${f.method} -> ${f.action}):\n`;
+              prompt += `Form #${i+1} (${f.method.toUpperCase()} -> ${f.action}):\n`;
               f.inputs.forEach(inp => {
                 prompt += `  - ${inp.type}: name="${inp.name}" placeholder="${inp.placeholder}"\n`;
               });
+              if (f.labels.length > 0) prompt += `  Etiketler: ${f.labels.join(', ')}\n`;
             });
             prompt += '\n';
           }
 
-          prompt += `## Sayfa içeriği:\n${siteData.content}\n\n`;
+          prompt += `## Sayfa İçeriği:\n${siteData.content}\n\n`;
           if (cssContent) prompt += `## style.css:\n\`\`\`css\n${cssContent}\n\`\`\`\n\n`;
           if (jsContent) prompt += `## script.js:\n\`\`\`javascript\n${jsContent}\n\`\`\`\n\n`;
 
-          const question = userQuestion || 'Bu web sitesini analiz et. Varsa formları, giriş alanlarını ve sayfa yapısını detaylı açıkla.';
+          const question = userQuestion || 'Bu web sitesini detaylı analiz et. Varsa login formlarını, kullanıcı adı/şifre alanlarını belirt. Site yapısını açıkla.';
 
           const { reply } = await api('/ask-ai', {
             messages: [
-              { role: 'system', content: 'Sen Mexa AI, web analiz ve form tespit uzmanısın. Siteyi, formları, input alanlarını detaylı analiz et. Login formları varsa hangi alanların kullanıcı adı/şifre olduğunu söyle. Türkçe yanıt ver.' },
+              { role: 'system', content: 'Sen Mexa AI, web analiz ve form tespit uzmanısın. Siteyi, formları, login alanlarını detaylı analiz et. Kullanıcı adı ve şifre alanlarını açıkça belirt. Türkçe, samimi ve kapsamlı yanıt ver.' },
               { role: 'user', content: `${prompt}\n\nSoru: ${question}` }
             ]
           });
@@ -1109,18 +1338,19 @@
           const actionRow = document.createElement('div');
           actionRow.className = 'action-row';
           [
-            { icon: 'fa-eye', label: 'Canlı gör', action: () => openLiveView(url) },
-            { icon: 'fa-key', label: 'Formları incele', action: () => {
+            { icon: 'fa-eye', label: 'Canlı gör ve kullan', action: () => openLiveView(url) },
+            { icon: 'fa-keyboard', label: 'Formları doldur', action: () => {
               if (currentSiteData?.forms) {
-                addMessage('assistant', null, createFormAnalysisCard(currentSiteData.forms, url));
+                addMessage('assistant', null, createFormFillCard(currentSiteData.forms, url));
               }
             }},
-            { icon: 'fa-css3-alt', label: 'CSS', action: () => analyzeFile(url, '/style.css') },
-            { icon: 'fa-js', label: 'JS', action: () => analyzeFile(url, '/script.js') }
+            { icon: 'fa-css3-alt', label: 'CSS analiz', action: () => analyzeFile(url, '/style.css') },
+            { icon: 'fa-js', label: 'JS analiz', action: () => analyzeFile(url, '/script.js') },
+            { icon: 'fa-download', label: 'Raporu indir', action: () => downloadReport(url, reply, siteData) }
           ].forEach(item => {
             const chip = document.createElement('span');
             chip.className = 'action-chip';
-            chip.innerHTML = `<i class="fa-solid ${item.icon}"></i> ${item.label}`;
+            chip.innerHTML = `<i class="fa-brands ${item.icon}"></i> ${item.label}`;
             chip.onclick = item.action;
             actionRow.appendChild(chip);
           });
@@ -1142,19 +1372,48 @@
           const { reply } = await api('/ask-ai', {
             messages: [
               { role: 'system', content: 'Kod analiz uzmanısın.' },
-              { role: 'user', content: `Dosya: ${fileName}\n\`\`\`\n${content}\n\`\`\`\nAnaliz et.` }
+              { role: 'user', content: `Dosya: ${fileName}\n\`\`\`\n${content}\n\`\`\`\nDetaylı analiz et.` }
             ]
           });
           removeTyping();
-          addMessage('assistant', `**📄 ${fileName}:**\n\n${reply}`);
+          addMessage('assistant', `**📄 ${fileName} Detaylı Analiz:**\n\n${reply}`);
         } catch (err) {
           removeTyping();
           addMessage('assistant', `⚠️ ${fileName}: ${err.message}`);
         }
       }
 
+      function downloadReport(url, analysis, siteData) {
+        const report = `Mexa AI Site Analiz Raporu
+========================
+Tarih: ${new Date().toLocaleString('tr-TR')}
+URL: ${url}
+Başlık: ${siteData?.meta?.title || 'Bilinmiyor'}
+Açıklama: ${siteData?.meta?.description || 'Yok'}
+
+Tespit Edilen Formlar: ${siteData?.forms?.length || 0}
+
+${siteData?.forms?.map((f,i) => `
+Form #${i+1} (${f.method.toUpperCase()}):
+${f.inputs.map(inp => `  - ${inp.type}: ${inp.name || '(isimsiz)'} (placeholder: ${inp.placeholder})`).join('\n')}
+`).join('\n') || 'Form bulunamadı'}
+
+ANALİZ:
+${analysis}
+`;
+        const blob = new Blob([report], { type: 'text/plain' });
+        const downloadUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `mexa-analiz-${new Date().toISOString().slice(0,10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(downloadUrl);
+        showToast('📄 Rapor indirildi!');
+      }
+
       function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+      // === MESAJ GÖNDERME ===
       async function sendMessage() {
         const raw = userInput.value.trim();
         if (!raw) return;
@@ -1172,7 +1431,7 @@
           } else {
             const { reply } = await api('/ask-ai', {
               messages: [
-                { role: 'system', content: 'Sen Mexa AI, yardımcı asistansın. Türkçe yanıt ver.' },
+                { role: 'system', content: 'Sen Mexa AI, gelişmiş bir asistansın. Web analizi, form tespiti, kod inceleme ve sohbet yapabilirsin. Türkçe, samimi ve kapsamlı yanıt ver.' },
                 { role: 'user', content: raw }
               ]
             });
