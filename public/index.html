@@ -26,6 +26,9 @@
       --radius-sm: 12px;
       --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.7);
       --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,7 +45,6 @@
       flex-direction: column;
     }
 
-    /* === ARKA PLAN PARÇACIKLARI === */
     #particles {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -65,7 +67,6 @@
       100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
 
-    /* === ANA UYGULAMA === */
     #app {
       position: relative;
       z-index: 1;
@@ -179,86 +180,33 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
-    /* === SİDEBAR (Geçmiş) === */
-    .sidebar {
-      position: fixed;
-      left: -300px;
-      top: 0;
-      width: 280px;
-      height: 100vh;
-      height: 100dvh;
-      background: rgba(12, 12, 29, 0.97);
-      backdrop-filter: blur(30px);
-      border-right: 1px solid var(--border);
-      z-index: 100;
-      transition: left var(--transition);
+    .btn-icon.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* === ANA İÇERİK (Sohbet + Canlı Görünüm) === */
+    .main-content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* Sohbet paneli */
+    .chat-panel {
+      flex: 1;
       display: flex;
       flex-direction: column;
+      min-width: 0;
+      transition: flex 0.3s;
     }
 
-    .sidebar.open {
-      left: 0;
+    .chat-panel.collapsed {
+      flex: 0.4;
     }
 
-    .sidebar-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .sidebar-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--accent-light);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .history-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px;
-    }
-
-    .history-item {
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: var(--transition);
-      margin-bottom: 3px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-    }
-
-    .history-item:hover {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-primary);
-    }
-
-    .history-item i {
-      font-size: 0.85rem;
-      color: var(--accent-light);
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 99;
-      display: none;
-    }
-
-    .overlay.show {
-      display: block;
-    }
-
-    /* === SOHBET ALANI === */
     .chat-container {
       flex: 1;
       overflow-y: auto;
@@ -272,6 +220,119 @@
     .chat-container::-webkit-scrollbar { width: 4px; }
     .chat-container::-webkit-scrollbar-track { background: transparent; }
     .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+    /* Canlı görünüm paneli */
+    .live-panel {
+      width: 0;
+      overflow: hidden;
+      background: white;
+      transition: width 0.3s;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--border);
+    }
+
+    .live-panel.open {
+      width: 50%;
+    }
+
+    .live-panel-header {
+      padding: 10px 14px;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .live-panel-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-panel-url {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .live-iframe-container {
+      flex: 1;
+      position: relative;
+      background: #f5f5f5;
+    }
+
+    .live-iframe-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .iframe-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* Form analiz kartı */
+    .form-analysis-card {
+      background: rgba(20, 17, 48, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 16px;
+      padding: 14px;
+      margin: 8px 0;
+    }
+
+    .form-analysis-title {
+      font-weight: 600;
+      color: var(--warning);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .form-input-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-input-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .form-input-item .input-type {
+      background: rgba(139, 92, 246, 0.2);
+      color: var(--accent-light);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
 
     /* Hoş geldin ekranı */
     .welcome-screen {
@@ -299,8 +360,8 @@
     }
 
     @keyframes welcomePulse {
-      0% { transform: scale(1); box-shadow: 0 16px 40px var(--accent-glow); }
-      100% { transform: scale(1.05); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.6); }
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
     }
 
     .welcome-title {
@@ -365,9 +426,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .message.user {
-      flex-direction: row-reverse;
-    }
+    .message.user { flex-direction: row-reverse; }
 
     .msg-avatar {
       width: 34px; height: 34px;
@@ -426,8 +485,8 @@
     }
 
     @keyframes cardGlow {
-      0% { box-shadow: 0 0 12px rgba(167, 139, 250, 0.08); border-color: rgba(167, 139, 250, 0.2); }
-      100% { box-shadow: 0 0 24px rgba(167, 139, 250, 0.2); border-color: rgba(167, 139, 250, 0.35); }
+      0% { box-shadow: 0 0 12px rgba(167, 139, 250, 0.08); }
+      100% { box-shadow: 0 0 24px rgba(167, 139, 250, 0.2); }
     }
 
     .analysis-title {
@@ -565,36 +624,11 @@
       box-shadow: 0 0 0 3px var(--accent-glow);
     }
 
-    .input-actions {
-      display: flex;
-      gap: 4px;
-      padding: 6px 8px 6px 12px;
-    }
-
-    .input-action-btn {
-      width: 28px; height: 28px;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      font-size: 0.85rem;
-    }
-
-    .input-action-btn:hover {
-      color: var(--accent-light);
-      background: rgba(255,255,255,0.05);
-    }
-
     textarea {
       width: 100%;
       background: transparent;
       border: none;
-      padding: 10px 8px 10px 0;
+      padding: 10px 14px;
       resize: none;
       color: var(--text-primary);
       font-family: inherit;
@@ -647,63 +681,18 @@
       30% { transform: translateY(-8px); }
     }
 
-    /* Quick reply chips */
-    .quick-replies {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 6px 0;
-    }
-
-    .quick-reply {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border-light);
-      padding: 6px 12px;
-      border-radius: 14px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      color: var(--text-secondary);
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-
-    .quick-reply:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: var(--accent);
-      color: var(--text-primary);
-    }
-
     /* Responsive */
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
+      .live-panel.open { width: 100%; position: fixed; top: 0; left: 0; z-index: 50; height: 100vh; }
       .msg-bubble { max-width: 85%; }
-      .topbar { padding: 10px 14px; }
-      .chat-container { padding: 12px 10px; }
-      .input-container { padding: 10px 12px 14px; }
       .feature-grid { grid-template-columns: 1fr; }
-      .status-chip { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Arka plan parçacıkları -->
   <div id="particles"></div>
 
-  <!-- Overlay -->
-  <div class="overlay" id="overlay"></div>
-
-  <!-- Sidebar - Sohbet Geçmişi -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <span class="sidebar-title"><i class="fa-solid fa-clock-rotate-left"></i> Geçmiş Analizler</span>
-      <button class="btn-icon" id="closeSidebar"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="history-list" id="historyList">
-      <div style="color: var(--text-muted); font-size: 0.78rem; padding: 8px;">Henüz analiz yok</div>
-    </div>
-  </aside>
-
-  <!-- Ana Uygulama -->
   <div id="app">
     <!-- Üst Bar -->
     <header class="topbar">
@@ -713,52 +702,65 @@
       </div>
       <div class="topbar-actions">
         <span class="status-chip"><span class="status-dot"></span> Aktif</span>
-        <button class="btn-icon" id="openSidebar" title="Geçmiş"><i class="fa-solid fa-clock-rotate-left"></i></button>
+        <button class="btn-icon" id="toggleLiveView" title="Canlı Görünüm"><i class="fa-solid fa-eye"></i></button>
         <button class="btn-icon" id="clearChat" title="Sohbeti Temizle"><i class="fa-solid fa-broom"></i></button>
-        <button class="btn-icon" id="themeToggle" title="Tema"><i class="fa-solid fa-moon"></i></button>
       </div>
     </header>
 
-    <!-- Sohbet Alanı -->
-    <div class="chat-container" id="chatContainer">
-      <!-- Hoş Geldin Ekranı -->
-      <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
-        <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
-        <div class="welcome-subtitle">Web sitelerini derinlemesine analiz eder, kodlarını inceler, internetten bilgi toplar ve sorularını yanıtlar.</div>
-        <div class="feature-grid">
-          <div class="feature-card" onclick="document.getElementById('userInput').value='Bir web sitesi analiz etmek istiyorum'; document.getElementById('userInput').focus();">
-            <i class="fa-solid fa-globe"></i> Site analizi
-          </div>
-          <div class="feature-card" onclick="document.getElementById('userInput').value='Merhaba Mexa!'; document.getElementById('userInput').focus();">
-            <i class="fa-solid fa-comments"></i> Sohbet
-          </div>
-          <div class="feature-card" onclick="document.getElementById('userInput').value='https://'; document.getElementById('userInput').focus();">
-            <i class="fa-solid fa-link"></i> Link gönder
-          </div>
-          <div class="feature-card" onclick="document.getElementById('userInput').value='Son analizleri göster'; document.getElementById('userInput').focus();">
-            <i class="fa-solid fa-list-check"></i> Geçmiş
+    <!-- Ana İçerik -->
+    <div class="main-content">
+      <!-- Sohbet Paneli -->
+      <div class="chat-panel" id="chatPanel">
+        <div class="chat-container" id="chatContainer">
+          <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
+            <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
+            <div class="welcome-subtitle">Web sitelerini canlı görüntüle, formları analiz et, kodları incele ve sorularını sor.</div>
+            <div class="feature-grid">
+              <div class="feature-card" onclick="quickAction('site')">
+                <i class="fa-solid fa-globe"></i> Site analizi
+              </div>
+              <div class="feature-card" onclick="quickAction('chat')">
+                <i class="fa-solid fa-comments"></i> Sohbet
+              </div>
+              <div class="feature-card" onclick="quickAction('link')">
+                <i class="fa-solid fa-link"></i> Link gönder
+              </div>
+              <div class="feature-card" onclick="quickAction('form')">
+                <i class="fa-solid fa-keyboard"></i> Form tespiti
+              </div>
+            </div>
           </div>
         </div>
+        <div class="input-container">
+          <div class="input-wrapper">
+            <textarea id="userInput" rows="1" placeholder="Link yapıştır veya 'şu sitedeki login formunu bul' yaz..."></textarea>
+          </div>
+          <button class="send-btn" id="sendBtn"><i class="fa-solid fa-arrow-up"></i></button>
+        </div>
       </div>
-    </div>
 
-    <!-- Giriş Alanı -->
-    <div class="input-container">
-      <div class="input-wrapper">
-        <div class="input-actions">
-          <button class="input-action-btn" title="Dosya yükle" onclick="alert('Yakında!')"><i class="fa-solid fa-paperclip"></i></button>
+      <!-- Canlı Görünüm Paneli -->
+      <div class="live-panel" id="livePanel">
+        <div class="live-panel-header">
+          <div class="live-panel-title"><i class="fa-solid fa-globe"></i> Canlı Görünüm</div>
+          <div class="live-panel-url" id="liveUrl"></div>
+          <button class="btn-icon" id="closeLiveView"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <textarea id="userInput" rows="1" placeholder="Link yapıştır veya bir şey sor..."></textarea>
+        <div class="live-iframe-container" id="iframeContainer">
+          <div class="iframe-overlay" id="iframeOverlay">
+            <i class="fa-solid fa-link" style="font-size: 2rem;"></i>
+            <p>Siteyi canlı görmek için bir link gönderin</p>
+          </div>
+        </div>
       </div>
-      <button class="send-btn" id="sendBtn"><i class="fa-solid fa-arrow-up"></i></button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     (function() {
-      // === ARKA PLAN PARÇACIKLARI ===
+      // Arka plan
       const particlesContainer = document.getElementById('particles');
       for (let i = 0; i < 45; i++) {
         const particle = document.createElement('div');
@@ -772,117 +774,90 @@
         particlesContainer.appendChild(particle);
       }
 
-      // === UYGULAMA ===
       const chatContainer = document.getElementById('chatContainer');
       const welcomeScreen = document.getElementById('welcomeScreen');
       const userInput = document.getElementById('userInput');
       const sendBtn = document.getElementById('sendBtn');
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
-      const historyList = document.getElementById('historyList');
+      const livePanel = document.getElementById('livePanel');
+      const liveUrl = document.getElementById('liveUrl');
+      const iframeContainer = document.getElementById('iframeContainer');
+      const iframeOverlay = document.getElementById('iframeOverlay');
+      const chatPanel = document.getElementById('chatPanel');
+      let currentSiteData = null;
 
-      let chatHistory = JSON.parse(localStorage.getItem('mexa_chat_history') || '[]');
-      let currentAnalysisCard = null;
-
-      // === HOŞ GELDİN EKRANI KONTROLÜ ===
       function checkWelcomeScreen() {
         const messages = chatContainer.querySelectorAll('.message');
-        if (messages.length === 0) {
-          welcomeScreen.style.display = 'flex';
-        } else {
-          welcomeScreen.style.display = 'none';
-        }
+        welcomeScreen.style.display = messages.length === 0 ? 'flex' : 'none';
       }
 
-      // === SIDEBAR ===
-      document.getElementById('openSidebar').addEventListener('click', () => {
-        sidebar.classList.add('open');
-        overlay.classList.add('show');
-        renderHistory();
+      // Canlı görünüm toggle
+      document.getElementById('toggleLiveView').addEventListener('click', () => {
+        if (livePanel.classList.contains('open')) {
+          closeLiveView();
+        } else if (currentSiteData) {
+          openLiveView(currentSiteData.url);
+        }
       });
 
-      document.getElementById('closeSidebar').addEventListener('click', closeSidebar);
-      overlay.addEventListener('click', closeSidebar);
+      document.getElementById('closeLiveView').addEventListener('click', closeLiveView);
 
-      function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('show');
+      function openLiveView(url) {
+        livePanel.classList.add('open');
+        chatPanel.classList.add('collapsed');
+        liveUrl.textContent = url;
+        
+        // iframe'i temizle
+        iframeContainer.querySelector('iframe')?.remove();
+        iframeOverlay.style.display = 'none';
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.sandbox = 'allow-same-origin allow-scripts allow-forms';
+        iframe.onerror = () => {
+          iframeOverlay.style.display = 'flex';
+          iframeOverlay.innerHTML = '<i class="fa-solid fa-lock" style="font-size:2rem;"></i><p>Bu site iframe\'de görüntülenemiyor</p>';
+        };
+        iframeContainer.appendChild(iframe);
       }
 
-      function saveToHistory(url, title) {
-        const exists = chatHistory.find(h => h.url === url);
-        if (!exists) {
-          chatHistory.unshift({ url, title, date: new Date().toISOString() });
-          if (chatHistory.length > 30) chatHistory.pop();
-          localStorage.setItem('mexa_chat_history', JSON.stringify(chatHistory));
-        }
+      function closeLiveView() {
+        livePanel.classList.remove('open');
+        chatPanel.classList.remove('collapsed');
+        iframeContainer.querySelector('iframe')?.remove();
+        iframeOverlay.style.display = 'flex';
       }
 
-      function renderHistory() {
-        if (chatHistory.length === 0) {
-          historyList.innerHTML = '<div style="color: var(--text-muted); font-size: 0.78rem; padding: 8px;">Henüz analiz yok</div>';
-          return;
-        }
-        historyList.innerHTML = chatHistory.map(h => `
-          <div class="history-item" onclick="window.analyzeHistory('${h.url.replace(/'/g, "\\'")}')">
-            <i class="fa-solid fa-globe"></i>
-            <div>
-              <div style="font-weight:500;">${h.title || h.url}</div>
-              <div style="font-size:0.7rem;color:var(--text-muted)">${new Date(h.date).toLocaleDateString('tr-TR')}</div>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      window.analyzeHistory = function(url) {
-        closeSidebar();
-        userInput.value = url;
-        sendMessage();
+      // Hızlı aksiyon
+      window.quickAction = function(type) {
+        const actions = {
+          site: 'Bir web sitesi analiz etmek istiyorum',
+          chat: 'Merhaba Mexa!',
+          link: 'https://',
+          form: 'https:// sitesindeki login formunu analiz et'
+        };
+        userInput.value = actions[type] || '';
+        userInput.focus();
       };
 
-      // === TEMİZLEME ===
+      // Temizleme
       document.getElementById('clearChat').addEventListener('click', () => {
-        if (confirm('Tüm sohbet geçmişini silmek istediğinize emin misiniz?')) {
+        if (confirm('Tüm sohbet geçmişini sil?')) {
           chatContainer.innerHTML = `
             <div class="welcome-screen" id="welcomeScreen">
               <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
               <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
-              <div class="welcome-subtitle">Web sitelerini derinlemesine analiz eder, kodlarını inceler, internetten bilgi toplar ve sorularını yanıtlar.</div>
+              <div class="welcome-subtitle">Web sitelerini canlı görüntüle, formları analiz et, kodları incele ve sorularını sor.</div>
               <div class="feature-grid">
-                <div class="feature-card" onclick="document.getElementById('userInput').value='Bir web sitesi analiz etmek istiyorum'; document.getElementById('userInput').focus();">
-                  <i class="fa-solid fa-globe"></i> Site analizi
-                </div>
-                <div class="feature-card" onclick="document.getElementById('userInput').value='Merhaba Mexa!'; document.getElementById('userInput').focus();">
-                  <i class="fa-solid fa-comments"></i> Sohbet
-                </div>
-                <div class="feature-card" onclick="document.getElementById('userInput').value='https://'; document.getElementById('userInput').focus();">
-                  <i class="fa-solid fa-link"></i> Link gönder
-                </div>
-                <div class="feature-card" onclick="document.getElementById('userInput').value='Son analizleri göster'; document.getElementById('userInput').focus();">
-                  <i class="fa-solid fa-list-check"></i> Geçmiş
-                </div>
+                <div class="feature-card" onclick="quickAction('site')"><i class="fa-solid fa-globe"></i> Site analizi</div>
+                <div class="feature-card" onclick="quickAction('chat')"><i class="fa-solid fa-comments"></i> Sohbet</div>
+                <div class="feature-card" onclick="quickAction('link')"><i class="fa-solid fa-link"></i> Link gönder</div>
+                <div class="feature-card" onclick="quickAction('form')"><i class="fa-solid fa-keyboard"></i> Form tespiti</div>
               </div>
             </div>`;
           localStorage.removeItem('mexa_chat_messages');
           checkWelcomeScreen();
         }
       });
-
-      // === SOHBET YÜKLEME ===
-      function loadChats() {
-        const saved = localStorage.getItem('mexa_chat_messages');
-        if (saved) {
-          const messages = JSON.parse(saved);
-          messages.forEach(m => {
-            if (m.role === 'assistant') {
-              addMessage('assistant', m.content, null, false);
-            } else {
-              addMessage('user', m.content, null, false);
-            }
-          });
-        }
-        checkWelcomeScreen();
-      }
 
       function saveMessages() {
         const messages = [];
@@ -896,43 +871,40 @@
         localStorage.setItem('mexa_chat_messages', JSON.stringify(messages));
       }
 
-      // === MESAJ EKLEME ===
-      function addMessage(role, content, extraHtml = null, save = true) {
-        // Hoş geldin ekranını gizle
-        welcomeScreen.style.display = 'none';
+      function loadChats() {
+        const saved = localStorage.getItem('mexa_chat_messages');
+        if (saved) {
+          JSON.parse(saved).forEach(m => {
+            addMessage(m.role, m.content, null, false);
+          });
+        }
+        checkWelcomeScreen();
+      }
 
+      function addMessage(role, content, extraHtml = null, save = true) {
+        welcomeScreen.style.display = 'none';
         const div = document.createElement('div');
         div.className = `message ${role}`;
-
         const avatar = document.createElement('div');
         avatar.className = 'msg-avatar';
         avatar.innerHTML = role === 'assistant' ? '<i class="fa-solid fa-robot"></i>' : '<i class="fa-solid fa-user"></i>';
-
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
-
         if (role === 'assistant' && content) {
           bubble.innerHTML = marked.parse(content, { breaks: true });
         } else if (content) {
           bubble.textContent = content;
         }
-
         if (content) bubble.setAttribute('data-raw', content);
-
-        if (extraHtml) {
-          bubble.appendChild(extraHtml);
-        }
-
+        if (extraHtml) bubble.appendChild(extraHtml);
         div.appendChild(avatar);
         div.appendChild(bubble);
         chatContainer.appendChild(div);
         chatContainer.scrollTop = chatContainer.scrollHeight;
-
         if (save) saveMessages();
         return bubble;
       }
 
-      // === YAZIYOR GÖSTERGESİ ===
       function typingIndicator() {
         welcomeScreen.style.display = 'none';
         const div = document.createElement('div');
@@ -940,9 +912,7 @@
         div.id = 'typingIndicator';
         div.innerHTML = `
           <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
-          <div class="msg-bubble">
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-          </div>`;
+          <div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
         chatContainer.appendChild(div);
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
@@ -951,7 +921,6 @@
         document.getElementById('typingIndicator')?.remove();
       }
 
-      // === API ===
       async function api(endpoint, body) {
         const res = await fetch(endpoint, {
           method: 'POST',
@@ -969,26 +938,66 @@
         return match ? match[0] : null;
       }
 
-      // === ADIMLI ANALİZ SÜRECİ ===
+      // Form analiz kartı
+      function createFormAnalysisCard(forms, url) {
+        const card = document.createElement('div');
+        card.className = 'form-analysis-card';
+        
+        if (forms.length === 0) {
+          card.innerHTML = `
+            <div class="form-analysis-title"><i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Form Tespiti</div>
+            <p style="font-size:0.82rem;color:var(--text-secondary);">Bu sayfada form bulunamadı.</p>`;
+          return card;
+        }
+
+        let html = `<div class="form-analysis-title"><i class="fa-solid fa-triangle-exclamation"></i> ${forms.length} Form Tespit Edildi!</div>`;
+        
+        forms.forEach((form, i) => {
+          html += `<div style="margin-bottom:8px;font-weight:600;font-size:0.8rem;color:var(--accent-light);">Form #${i+1} (${form.method.toUpperCase()})</div>`;
+          
+          if (form.inputs.length > 0) {
+            html += '<div class="form-input-list">';
+            form.inputs.forEach(input => {
+              const isPassword = input.type === 'password';
+              const isSubmit = input.type === 'submit';
+              html += `
+                <div class="form-input-item">
+                  <span class="input-type">${input.type}</span>
+                  <span>${input.name || input.placeholder || '(isimsiz)'}</span>
+                  ${isPassword ? '<i class="fa-solid fa-lock" style="color:var(--warning);margin-left:auto;"></i>' : ''}
+                  ${isSubmit ? '<i class="fa-solid fa-paper-plane" style="color:var(--success);margin-left:auto;"></i>' : ''}
+                </div>`;
+            });
+            html += '</div>';
+          }
+
+          if (form.labels.length > 0) {
+            html += `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Etiketler: ${form.labels.join(', ')}</div>`;
+          }
+        });
+
+        card.innerHTML = html;
+        return card;
+      }
+
+      // Ana analiz süreci
       async function performSiteAnalysis(url, userQuestion) {
         const card = document.createElement('div');
         card.className = 'analysis-card';
         card.innerHTML = `
-          <div class="analysis-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Mexa Derin Tarama Başlatıldı</div>
+          <div class="analysis-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Mexa Derin Tarama</div>
           <div class="step-list">
             <div class="step-item" data-step="connect"><span class="step-dot"><i class="fa-solid fa-wifi"></i></span><span>Siteye bağlanıyor</span></div>
-            <div class="step-item" data-step="search"><span class="step-dot"><i class="fa-brands fa-google"></i></span><span>İnternette aranıyor</span></div>
-            <div class="step-item" data-step="html"><span class="step-dot"><i class="fa-solid fa-file-code"></i></span><span>index.html okunuyor</span></div>
-            <div class="step-item" data-step="css"><span class="step-dot"><i class="fa-brands fa-css3-alt"></i></span><span>style.css taranıyor</span></div>
-            <div class="step-item" data-step="js"><span class="step-dot"><i class="fa-brands fa-js"></i></span><span>script.js inceleniyor</span></div>
+            <div class="step-item" data-step="forms"><span class="step-dot"><i class="fa-solid fa-magnifying-glass"></i></span><span>Formlar taranıyor</span></div>
+            <div class="step-item" data-step="html"><span class="step-dot"><i class="fa-solid fa-file-code"></i></span><span>Sayfa okunuyor</span></div>
+            <div class="step-item" data-step="css"><span class="step-dot"><i class="fa-brands fa-css3-alt"></i></span><span>Stil dosyaları</span></div>
+            <div class="step-item" data-step="js"><span class="step-dot"><i class="fa-brands fa-js"></i></span><span>Script dosyaları</span></div>
             <div class="step-item" data-step="ai"><span class="step-dot"><i class="fa-solid fa-brain"></i></span><span>AI analiz ediyor</span></div>
           </div>
           <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
         `;
 
-        currentAnalysisCard = card;
         addMessage('assistant', null, card);
-
         const stepList = card.querySelector('.step-list');
         const progressFill = card.querySelector('#progressFill');
 
@@ -999,41 +1008,41 @@
           if (text) step.querySelector('span:last-child').textContent = text;
           const icons = {
             connect: { active: 'fa-wifi', completed: 'fa-circle-check', error: 'fa-circle-xmark' },
-            search: { active: 'fa-google', completed: 'fa-circle-check', error: 'fa-circle-xmark' },
+            forms: { active: 'fa-magnifying-glass', completed: 'fa-circle-check', error: 'fa-circle-xmark' },
             html: { active: 'fa-file-code', completed: 'fa-circle-check', error: 'fa-circle-xmark' },
             css: { active: 'fa-css3-alt', completed: 'fa-circle-check', error: 'fa-circle-xmark' },
             js: { active: 'fa-js', completed: 'fa-circle-check', error: 'fa-circle-xmark' },
             ai: { active: 'fa-brain', completed: 'fa-circle-check', error: 'fa-circle-xmark' }
           };
-          const icon = icons[name]?.[status] || 'fa-circle';
-          step.querySelector('.step-dot').innerHTML = `<i class="fa-solid ${icon}"></i>`;
+          step.querySelector('.step-dot').innerHTML = `<i class="fa-solid ${icons[name]?.[status] || 'fa-circle'}"></i>`;
         }
 
-        const progressMap = { connect: 10, search: 25, html: 40, css: 55, js: 70, ai: 85 };
-
         try {
-          updateStep('connect', 'active');
-          progressFill.style.width = '5%';
+          updateStep('connect', 'active'); progressFill.style.width = '5%';
           await delay(500);
           updateStep('connect', 'completed', 'Siteye bağlanıldı');
-          progressFill.style.width = '10%';
+          progressFill.style.width = '12%';
 
-          updateStep('search', 'active');
-          progressFill.style.width = '15%';
-          await delay(400);
-          const searchInfo = await performGoogleSearch(url);
-          updateStep('search', 'completed', searchInfo ? 'İnternet bilgileri toplandı' : 'İnternette arandı');
-          progressFill.style.width = '25%';
-
-          updateStep('html', 'active');
-          progressFill.style.width = '30%';
+          updateStep('forms', 'active'); progressFill.style.width = '18%';
           const siteData = await api('/fetch-site', { url });
+          currentSiteData = siteData;
           await delay(300);
-          updateStep('html', 'completed', `index.html okundu (${siteData.content.length} karakter)`);
-          progressFill.style.width = '45%';
+          
+          const formCount = siteData.forms?.length || 0;
+          updateStep('forms', 'completed', `${formCount} form bulundu`);
+          progressFill.style.width = '30%';
 
-          updateStep('css', 'active');
+          // Form analiz kartını göster
+          if (siteData.forms && siteData.forms.length > 0) {
+            addMessage('assistant', null, createFormAnalysisCard(siteData.forms, url));
+          }
+
+          updateStep('html', 'active'); progressFill.style.width = '35%';
+          await delay(300);
+          updateStep('html', 'completed', `${siteData.content.length} karakter okundu`);
           progressFill.style.width = '50%';
+
+          updateStep('css', 'active'); progressFill.style.width = '55%';
           let cssContent = null;
           try {
             const cssData = await api('/fetch-file', { url: url.replace(/\/$/, '') + '/style.css' });
@@ -1042,12 +1051,11 @@
             updateStep('css', 'completed', 'style.css bulundu');
           } catch {
             await delay(200);
-            updateStep('css', 'error', 'style.css bulunamadı');
+            updateStep('css', 'error', 'style.css yok');
           }
-          progressFill.style.width = '65%';
-
-          updateStep('js', 'active');
           progressFill.style.width = '70%';
+
+          updateStep('js', 'active'); progressFill.style.width = '75%';
           let jsContent = null;
           try {
             const jsData = await api('/fetch-file', { url: url.replace(/\/$/, '') + '/script.js' });
@@ -1056,74 +1064,73 @@
             updateStep('js', 'completed', 'script.js bulundu');
           } catch {
             await delay(200);
-            updateStep('js', 'error', 'script.js bulunamadı');
+            updateStep('js', 'error', 'script.js yok');
           }
-          progressFill.style.width = '80%';
-
-          updateStep('ai', 'active');
           progressFill.style.width = '85%';
 
-          let prompt = `Web sitesi detaylı analizi:\n\nURL: ${url}\n\n`;
-          if (searchInfo) prompt += `## İnternet arama sonuçları:\n${searchInfo}\n\n`;
-          prompt += `## Ana sayfa içeriği:\n${siteData.content}\n\n`;
+          updateStep('ai', 'active'); progressFill.style.width = '88%';
+
+          let prompt = `Web sitesi analizi:\n\nURL: ${url}\n\n`;
+          if (siteData.meta?.title) prompt += `Başlık: ${siteData.meta.title}\n`;
+          if (siteData.meta?.description) prompt += `Açıklama: ${siteData.meta.description}\n\n`;
+          
+          if (siteData.forms && siteData.forms.length > 0) {
+            prompt += `## Tespit Edilen Formlar:\n`;
+            siteData.forms.forEach((f, i) => {
+              prompt += `Form #${i+1} (${f.method} -> ${f.action}):\n`;
+              f.inputs.forEach(inp => {
+                prompt += `  - ${inp.type}: name="${inp.name}" placeholder="${inp.placeholder}"\n`;
+              });
+            });
+            prompt += '\n';
+          }
+
+          prompt += `## Sayfa içeriği:\n${siteData.content}\n\n`;
           if (cssContent) prompt += `## style.css:\n\`\`\`css\n${cssContent}\n\`\`\`\n\n`;
           if (jsContent) prompt += `## script.js:\n\`\`\`javascript\n${jsContent}\n\`\`\`\n\n`;
 
-          const question = userQuestion || 'Bu web sitesini kapsamlı analiz et. Tasarım, teknik altyapı, içerik ve genel değerlendirme yap.';
+          const question = userQuestion || 'Bu web sitesini analiz et. Varsa formları, giriş alanlarını ve sayfa yapısını detaylı açıkla.';
 
           const { reply } = await api('/ask-ai', {
             messages: [
-              { role: 'system', content: 'Sen Mexa AI, kapsamlı web analiz uzmanısın. Site içeriğini, internet bilgilerini ve kod dosyalarını inceleyerek detaylı rapor sun. Başlıklar ve listeler kullan. Türkçe.' },
+              { role: 'system', content: 'Sen Mexa AI, web analiz ve form tespit uzmanısın. Siteyi, formları, input alanlarını detaylı analiz et. Login formları varsa hangi alanların kullanıcı adı/şifre olduğunu söyle. Türkçe yanıt ver.' },
               { role: 'user', content: `${prompt}\n\nSoru: ${question}` }
             ]
           });
 
-          updateStep('ai', 'completed', 'AI analizi tamamlandı');
+          updateStep('ai', 'completed', 'Analiz tamamlandı');
           progressFill.style.width = '100%';
           await delay(400);
 
-          card.querySelector('.analysis-title').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Analiz Tamamlandı';
+          card.querySelector('.analysis-title').innerHTML = '<i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Analiz Tamamlandı';
 
           const resultBubble = addMessage('assistant', reply);
 
           const actionRow = document.createElement('div');
           actionRow.className = 'action-row';
           [
-            { icon: 'fa-css3-alt', label: 'style.css', action: () => analyzeFile(url, '/style.css') },
-            { icon: 'fa-js', label: 'script.js', action: () => analyzeFile(url, '/script.js') },
-            { icon: 'fa-google', label: 'Google\'da ara', action: () => window.open(`https://www.google.com/search?q=${encodeURIComponent(url)}`, '_blank') },
-            { icon: 'fa-copy', label: 'URL kopyala', action: () => { navigator.clipboard.writeText(url); alert('URL kopyalandı!'); } }
+            { icon: 'fa-eye', label: 'Canlı gör', action: () => openLiveView(url) },
+            { icon: 'fa-key', label: 'Formları incele', action: () => {
+              if (currentSiteData?.forms) {
+                addMessage('assistant', null, createFormAnalysisCard(currentSiteData.forms, url));
+              }
+            }},
+            { icon: 'fa-css3-alt', label: 'CSS', action: () => analyzeFile(url, '/style.css') },
+            { icon: 'fa-js', label: 'JS', action: () => analyzeFile(url, '/script.js') }
           ].forEach(item => {
             const chip = document.createElement('span');
             chip.className = 'action-chip';
-            chip.innerHTML = `<i class="fa-brands ${item.icon}"></i> ${item.label}`;
+            chip.innerHTML = `<i class="fa-solid ${item.icon}"></i> ${item.label}`;
             chip.onclick = item.action;
             actionRow.appendChild(chip);
           });
           resultBubble.appendChild(actionRow);
-
-          saveToHistory(url, url.replace(/https?:\/\//, '').split('/')[0]);
 
         } catch (err) {
           updateStep('ai', 'error', `Hata: ${err.message}`);
           progressFill.style.width = '100%';
           progressFill.style.background = '#ef4444';
           card.querySelector('.analysis-title').innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Analiz Başarısız';
-        }
-      }
-
-      // Google'da site hakkında arama (gelişmiş tarama)
-      async function performGoogleSearch(url) {
-        try {
-          const domain = url.replace(/https?:\/\//, '').split('/')[0];
-          const searchUrl = `https://www.google.com/search?q=site:${domain}+${domain}`;
-          const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(searchUrl)}`);
-          const html = await res.text();
-          const snippets = html.match(/<div class="BNeawe s3v9rd AP7Wnd">([^<]+)<\/div>/g) || [];
-          const texts = snippets.slice(0, 5).map(s => s.replace(/<[^>]+>/g, '')).join('\n');
-          return texts || null;
-        } catch {
-          return null;
         }
       }
 
@@ -1134,21 +1141,20 @@
           const { content, type } = await api('/fetch-file', { url: fileUrl });
           const { reply } = await api('/ask-ai', {
             messages: [
-              { role: 'system', content: 'Kod analiz uzmanısın. Dosyayı inceleyip işlevini açıkla.' },
-              { role: 'user', content: `Dosya: ${fileName}\nTür: ${type}\n\`\`\`\n${content}\n\`\`\`\nDetaylı analiz et.` }
+              { role: 'system', content: 'Kod analiz uzmanısın.' },
+              { role: 'user', content: `Dosya: ${fileName}\n\`\`\`\n${content}\n\`\`\`\nAnaliz et.` }
             ]
           });
           removeTyping();
-          addMessage('assistant', `**📄 ${fileName} Derin Analiz:**\n\n${reply}`);
+          addMessage('assistant', `**📄 ${fileName}:**\n\n${reply}`);
         } catch (err) {
           removeTyping();
-          addMessage('assistant', `⚠️ ${fileName} incelenemedi: ${err.message}`);
+          addMessage('assistant', `⚠️ ${fileName}: ${err.message}`);
         }
       }
 
       function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-      // === ANA GÖNDERME ===
       async function sendMessage() {
         const raw = userInput.value.trim();
         if (!raw) return;
@@ -1166,7 +1172,7 @@
           } else {
             const { reply } = await api('/ask-ai', {
               messages: [
-                { role: 'system', content: 'Sen Mexa AI, yardımcı asistansın. Türkçe, samimi ve detaylı yanıt ver.' },
+                { role: 'system', content: 'Sen Mexa AI, yardımcı asistansın. Türkçe yanıt ver.' },
                 { role: 'user', content: raw }
               ]
             });
@@ -1179,7 +1185,6 @@
         }
       }
 
-      // === EVENT LISTENERS ===
       userInput.addEventListener('keydown', e => {
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
       });
@@ -1189,9 +1194,7 @@
         userInput.style.height = Math.min(userInput.scrollHeight, 100) + 'px';
       });
 
-      // === BAŞLANGIÇ ===
       loadChats();
-      renderHistory();
     })();
   </script>
 </body>
