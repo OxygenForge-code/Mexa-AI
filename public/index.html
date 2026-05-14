@@ -36,6 +36,7 @@
       color: var(--text-primary);
       width: 100vw;
       height: 100vh;
+      height: 100dvh;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -70,6 +71,7 @@
       z-index: 1;
       width: 100%;
       height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       background: transparent;
@@ -79,40 +81,41 @@
     .topbar {
       display: flex;
       align-items: center;
-      padding: 14px 24px;
-      background: rgba(12, 12, 29, 0.8);
+      padding: 12px 20px;
+      background: rgba(12, 12, 29, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
       z-index: 10;
+      gap: 10px;
     }
 
     .logo-section {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .logo-icon {
-      width: 42px; height: 42px;
+      width: 38px; height: 38px;
       background: linear-gradient(135deg, var(--accent-light), var(--accent));
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 18px;
       color: white;
-      box-shadow: 0 8px 24px var(--accent-glow);
+      box-shadow: 0 6px 20px var(--accent-glow);
       animation: logoFloat 4s infinite ease-in-out;
     }
 
     @keyframes logoFloat {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-5px) rotate(2deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
     }
 
     .logo-text {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
@@ -125,24 +128,26 @@
       margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
     .status-chip {
       background: rgba(139, 92, 246, 0.15);
       border: 1px solid rgba(139, 92, 246, 0.3);
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--accent-light);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
     }
 
     .status-dot {
-      width: 8px; height: 8px;
+      width: 7px; height: 7px;
       background: #10b981;
       border-radius: 50%;
       animation: pulse 2s infinite;
@@ -150,21 +155,22 @@
 
     @keyframes pulse {
       0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
     }
 
     .btn-icon {
-      width: 38px; height: 38px;
+      width: 34px; height: 34px;
       background: rgba(255,255,255,0.05);
       border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm);
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       color: var(--text-secondary);
       transition: var(--transition);
-      font-size: 1rem;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
     .btn-icon:hover {
@@ -176,11 +182,12 @@
     /* === SİDEBAR (Geçmiş) === */
     .sidebar {
       position: fixed;
-      left: -320px;
+      left: -300px;
       top: 0;
-      width: 300px;
+      width: 280px;
       height: 100vh;
-      background: rgba(12, 12, 29, 0.95);
+      height: 100dvh;
+      background: rgba(12, 12, 29, 0.97);
       backdrop-filter: blur(30px);
       border-right: 1px solid var(--border);
       z-index: 100;
@@ -194,7 +201,7 @@
     }
 
     .sidebar-header {
-      padding: 16px 20px;
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -203,26 +210,29 @@
 
     .sidebar-title {
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--accent-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .history-list {
       flex: 1;
       overflow-y: auto;
-      padding: 10px;
+      padding: 8px;
     }
 
     .history-item {
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       transition: var(--transition);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
+      gap: 8px;
+      font-size: 0.82rem;
       color: var(--text-secondary);
     }
 
@@ -232,7 +242,7 @@
     }
 
     .history-item i {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--accent-light);
     }
 
@@ -252,25 +262,106 @@
     .chat-container {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 24px;
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
+      min-height: 0;
     }
 
-    .chat-container::-webkit-scrollbar { width: 5px; }
+    .chat-container::-webkit-scrollbar { width: 4px; }
     .chat-container::-webkit-scrollbar-track { background: transparent; }
     .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+    /* Hoş geldin ekranı */
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 16px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .welcome-icon {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: white;
+      box-shadow: 0 16px 40px var(--accent-glow);
+      animation: welcomePulse 2s infinite alternate;
+    }
+
+    @keyframes welcomePulse {
+      0% { transform: scale(1); box-shadow: 0 16px 40px var(--accent-glow); }
+      100% { transform: scale(1.05); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.6); }
+    }
+
+    .welcome-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 400px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      max-width: 450px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: var(--accent);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+
+    .feature-card i {
+      font-size: 1.1rem;
+      color: var(--accent-light);
+    }
 
     /* Mesajlar */
     .message {
       display: flex;
-      gap: 12px;
-      animation: msgSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 10px;
+      animation: msgSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
     }
 
     @keyframes msgSlide {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -279,12 +370,12 @@
     }
 
     .msg-avatar {
-      width: 38px; height: 38px;
-      border-radius: var(--radius-sm);
+      width: 34px; height: 34px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
+      font-size: 0.85rem;
       flex-shrink: 0;
       background: rgba(255,255,255,0.06);
       border: 1px solid var(--border);
@@ -296,11 +387,11 @@
     }
 
     .msg-bubble {
-      max-width: 72%;
-      padding: 14px 20px;
-      border-radius: var(--radius-md);
-      line-height: 1.65;
-      font-size: 0.92rem;
+      max-width: 70%;
+      padding: 12px 18px;
+      border-radius: 16px;
+      line-height: 1.6;
+      font-size: 0.88rem;
       word-wrap: break-word;
       position: relative;
     }
@@ -308,16 +399,16 @@
     .assistant .msg-bubble {
       background: var(--bg-tertiary);
       border: 1px solid var(--border);
-      border-bottom-left-radius: 6px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
 
     .user .msg-bubble {
       background: linear-gradient(135deg, #6d28d9, #4c1d95);
       border: 1px solid rgba(255,255,255,0.1);
-      border-bottom-right-radius: 6px;
+      border-bottom-right-radius: 4px;
       color: white;
-      box-shadow: 0 6px 20px rgba(109, 40, 217, 0.35);
+      box-shadow: 0 4px 16px rgba(109, 40, 217, 0.3);
     }
 
     .msg-bubble a { color: var(--accent-light); }
@@ -326,39 +417,40 @@
     .analysis-card {
       background: rgba(20, 17, 48, 0.85);
       border: 1px solid rgba(167, 139, 250, 0.25);
-      border-radius: 20px;
-      padding: 18px 20px;
-      margin: 6px 0;
+      border-radius: 18px;
+      padding: 14px 16px;
+      margin: 4px 0;
       backdrop-filter: blur(20px);
       animation: cardGlow 3s infinite alternate;
+      width: 100%;
     }
 
     @keyframes cardGlow {
-      0% { box-shadow: 0 0 15px rgba(167, 139, 250, 0.1); border-color: rgba(167, 139, 250, 0.2); }
-      100% { box-shadow: 0 0 30px rgba(167, 139, 250, 0.25); border-color: rgba(167, 139, 250, 0.4); }
+      0% { box-shadow: 0 0 12px rgba(167, 139, 250, 0.08); border-color: rgba(167, 139, 250, 0.2); }
+      100% { box-shadow: 0 0 24px rgba(167, 139, 250, 0.2); border-color: rgba(167, 139, 250, 0.35); }
     }
 
     .analysis-title {
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       color: var(--accent-light);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .step-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .step-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
+      gap: 8px;
+      font-size: 0.8rem;
       opacity: 0.5;
       transition: all 0.5s;
     }
@@ -368,20 +460,21 @@
     .step-item.error { opacity: 0.8; color: #fca5a5; }
 
     .step-dot {
-      width: 26px; height: 26px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       background: rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       transition: all 0.4s;
+      flex-shrink: 0;
     }
 
     .step-item.active .step-dot {
       background: rgba(139, 92, 246, 0.4);
       animation: dotPulse 1s infinite;
-      box-shadow: 0 0 12px var(--accent-glow);
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .step-item.completed .step-dot {
@@ -394,15 +487,15 @@
 
     @keyframes dotPulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
+      50% { transform: scale(1.12); }
     }
 
     .progress-bar {
       width: 100%;
-      height: 5px;
+      height: 4px;
       background: rgba(255,255,255,0.06);
       border-radius: 10px;
-      margin-top: 12px;
+      margin-top: 10px;
       overflow: hidden;
     }
 
@@ -411,93 +504,104 @@
       background: linear-gradient(90deg, var(--accent), var(--accent-light));
       border-radius: 10px;
       transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 0;
-      width: 10px; height: 100%;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 10px white;
-      animation: progressGlow 0.8s infinite alternate;
-    }
-
-    @keyframes progressGlow {
-      0% { opacity: 0.6; }
-      100% { opacity: 1; }
     }
 
     /* Aksiyon butonları */
     .action-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 6px;
+      margin-top: 8px;
     }
 
     .action-chip {
-      background: rgba(139, 92, 246, 0.12);
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.25);
       color: var(--accent-light);
-      padding: 7px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: all 0.3s;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
     }
 
     .action-chip:hover {
       background: var(--accent);
       color: white;
       border-color: var(--accent);
-      box-shadow: 0 4px 16px var(--accent-glow);
+      box-shadow: 0 4px 14px var(--accent-glow);
       transform: translateY(-1px);
     }
 
     /* === GİRİŞ ALANI === */
-    .input-area {
-      padding: 14px 24px 18px;
-      background: rgba(12, 12, 29, 0.8);
+    .input-container {
+      flex-shrink: 0;
+      padding: 12px 20px 16px;
+      background: rgba(12, 12, 29, 0.85);
       backdrop-filter: blur(20px);
       border-top: 1px solid var(--border);
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: flex-end;
-      flex-shrink: 0;
     }
 
     .input-wrapper {
       flex: 1;
       background: rgba(255,255,255,0.04);
       border: 1px solid var(--border-light);
-      border-radius: 20px;
+      border-radius: 18px;
       display: flex;
       align-items: flex-end;
       transition: var(--transition);
+      min-width: 0;
     }
 
     .input-wrapper:focus-within {
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px var(--accent-glow);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 4px;
+      padding: 6px 8px 6px 12px;
+    }
+
+    .input-action-btn {
+      width: 28px; height: 28px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      font-size: 0.85rem;
+    }
+
+    .input-action-btn:hover {
+      color: var(--accent-light);
+      background: rgba(255,255,255,0.05);
     }
 
     textarea {
       width: 100%;
       background: transparent;
       border: none;
-      padding: 12px 16px;
+      padding: 10px 8px 10px 0;
       resize: none;
       color: var(--text-primary);
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
-      max-height: 120px;
+      max-height: 100px;
+      line-height: 1.4;
     }
 
     textarea::placeholder { color: var(--text-muted); }
@@ -505,32 +609,32 @@
     .send-btn {
       background: linear-gradient(135deg, var(--accent), #6d28d9);
       border: none;
-      width: 46px; height: 46px;
-      border-radius: 16px;
+      width: 42px; height: 42px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       color: white;
-      font-size: 1.2rem;
+      font-size: 1rem;
       transition: var(--transition);
-      box-shadow: 0 6px 20px var(--accent-glow);
+      box-shadow: 0 4px 16px var(--accent-glow);
       flex-shrink: 0;
     }
 
     .send-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 28px rgba(139, 92, 246, 0.6);
+      box-shadow: 0 6px 24px rgba(139, 92, 246, 0.6);
     }
 
     .send-btn:active { transform: scale(0.95); }
 
     /* Yazıyor göstergesi */
     .typing-dots {
-      display: flex; gap: 5px; padding: 6px 0;
+      display: flex; gap: 4px; padding: 4px 0;
     }
     .typing-dots span {
-      width: 7px; height: 7px;
+      width: 6px; height: 6px;
       background: var(--accent-light);
       border-radius: 50%;
       animation: wave 1.3s infinite;
@@ -540,15 +644,43 @@
 
     @keyframes wave {
       0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-9px); }
+      30% { transform: translateY(-8px); }
+    }
+
+    /* Quick reply chips */
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 6px 0;
+    }
+
+    .quick-reply {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-light);
+      padding: 6px 12px;
+      border-radius: 14px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .quick-reply:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--accent);
+      color: var(--text-primary);
     }
 
     /* Responsive */
     @media (max-width: 640px) {
-      .msg-bubble { max-width: 88%; }
-      .topbar { padding: 10px 16px; }
-      .chat-container { padding: 14px 12px; }
-      .input-area { padding: 10px 12px 14px; }
+      .msg-bubble { max-width: 85%; }
+      .topbar { padding: 10px 14px; }
+      .chat-container { padding: 12px 10px; }
+      .input-container { padding: 10px 12px 14px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .status-chip { display: none; }
     }
   </style>
 </head>
@@ -563,11 +695,11 @@
   <!-- Sidebar - Sohbet Geçmişi -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <span class="sidebar-title"><i class="fa-solid fa-clock-rotate-left"></i> Geçmiş</span>
+      <span class="sidebar-title"><i class="fa-solid fa-clock-rotate-left"></i> Geçmiş Analizler</span>
       <button class="btn-icon" id="closeSidebar"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="history-list" id="historyList">
-      <div style="color: var(--text-muted); font-size: 0.8rem; padding: 8px;">Henüz sohbet yok</div>
+      <div style="color: var(--text-muted); font-size: 0.78rem; padding: 8px;">Henüz analiz yok</div>
     </div>
   </aside>
 
@@ -582,16 +714,42 @@
       <div class="topbar-actions">
         <span class="status-chip"><span class="status-dot"></span> Aktif</span>
         <button class="btn-icon" id="openSidebar" title="Geçmiş"><i class="fa-solid fa-clock-rotate-left"></i></button>
+        <button class="btn-icon" id="clearChat" title="Sohbeti Temizle"><i class="fa-solid fa-broom"></i></button>
+        <button class="btn-icon" id="themeToggle" title="Tema"><i class="fa-solid fa-moon"></i></button>
       </div>
     </header>
 
     <!-- Sohbet Alanı -->
-    <div class="chat-container" id="chatContainer"></div>
+    <div class="chat-container" id="chatContainer">
+      <!-- Hoş Geldin Ekranı -->
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
+        <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
+        <div class="welcome-subtitle">Web sitelerini derinlemesine analiz eder, kodlarını inceler, internetten bilgi toplar ve sorularını yanıtlar.</div>
+        <div class="feature-grid">
+          <div class="feature-card" onclick="document.getElementById('userInput').value='Bir web sitesi analiz etmek istiyorum'; document.getElementById('userInput').focus();">
+            <i class="fa-solid fa-globe"></i> Site analizi
+          </div>
+          <div class="feature-card" onclick="document.getElementById('userInput').value='Merhaba Mexa!'; document.getElementById('userInput').focus();">
+            <i class="fa-solid fa-comments"></i> Sohbet
+          </div>
+          <div class="feature-card" onclick="document.getElementById('userInput').value='https://'; document.getElementById('userInput').focus();">
+            <i class="fa-solid fa-link"></i> Link gönder
+          </div>
+          <div class="feature-card" onclick="document.getElementById('userInput').value='Son analizleri göster'; document.getElementById('userInput').focus();">
+            <i class="fa-solid fa-list-check"></i> Geçmiş
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Giriş Alanı -->
-    <div class="input-area">
+    <div class="input-container">
       <div class="input-wrapper">
-        <textarea id="userInput" rows="1" placeholder="Link yapıştır veya sor..."></textarea>
+        <div class="input-actions">
+          <button class="input-action-btn" title="Dosya yükle" onclick="alert('Yakında!')"><i class="fa-solid fa-paperclip"></i></button>
+        </div>
+        <textarea id="userInput" rows="1" placeholder="Link yapıştır veya bir şey sor..."></textarea>
       </div>
       <button class="send-btn" id="sendBtn"><i class="fa-solid fa-arrow-up"></i></button>
     </div>
@@ -602,7 +760,7 @@
     (function() {
       // === ARKA PLAN PARÇACIKLARI ===
       const particlesContainer = document.getElementById('particles');
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 45; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         const size = Math.random() * 4 + 2;
@@ -616,6 +774,7 @@
 
       // === UYGULAMA ===
       const chatContainer = document.getElementById('chatContainer');
+      const welcomeScreen = document.getElementById('welcomeScreen');
       const userInput = document.getElementById('userInput');
       const sendBtn = document.getElementById('sendBtn');
       const sidebar = document.getElementById('sidebar');
@@ -624,6 +783,16 @@
 
       let chatHistory = JSON.parse(localStorage.getItem('mexa_chat_history') || '[]');
       let currentAnalysisCard = null;
+
+      // === HOŞ GELDİN EKRANI KONTROLÜ ===
+      function checkWelcomeScreen() {
+        const messages = chatContainer.querySelectorAll('.message');
+        if (messages.length === 0) {
+          welcomeScreen.style.display = 'flex';
+        } else {
+          welcomeScreen.style.display = 'none';
+        }
+      }
 
       // === SIDEBAR ===
       document.getElementById('openSidebar').addEventListener('click', () => {
@@ -644,22 +813,22 @@
         const exists = chatHistory.find(h => h.url === url);
         if (!exists) {
           chatHistory.unshift({ url, title, date: new Date().toISOString() });
-          if (chatHistory.length > 20) chatHistory.pop();
+          if (chatHistory.length > 30) chatHistory.pop();
           localStorage.setItem('mexa_chat_history', JSON.stringify(chatHistory));
         }
       }
 
       function renderHistory() {
         if (chatHistory.length === 0) {
-          historyList.innerHTML = '<div style="color: var(--text-muted); font-size: 0.8rem; padding: 8px;">Henüz sohbet yok</div>';
+          historyList.innerHTML = '<div style="color: var(--text-muted); font-size: 0.78rem; padding: 8px;">Henüz analiz yok</div>';
           return;
         }
         historyList.innerHTML = chatHistory.map(h => `
-          <div class="history-item" onclick="window.analyzeHistory('${h.url}')">
+          <div class="history-item" onclick="window.analyzeHistory('${h.url.replace(/'/g, "\\'")}')">
             <i class="fa-solid fa-globe"></i>
             <div>
               <div style="font-weight:500;">${h.title || h.url}</div>
-              <div style="font-size:0.7rem;color:var(--text-muted)">${new Date(h.date).toLocaleDateString()}</div>
+              <div style="font-size:0.7rem;color:var(--text-muted)">${new Date(h.date).toLocaleDateString('tr-TR')}</div>
             </div>
           </div>
         `).join('');
@@ -670,6 +839,34 @@
         userInput.value = url;
         sendMessage();
       };
+
+      // === TEMİZLEME ===
+      document.getElementById('clearChat').addEventListener('click', () => {
+        if (confirm('Tüm sohbet geçmişini silmek istediğinize emin misiniz?')) {
+          chatContainer.innerHTML = `
+            <div class="welcome-screen" id="welcomeScreen">
+              <div class="welcome-icon"><i class="fa-solid fa-rocket"></i></div>
+              <div class="welcome-title">Mexa AI'a Hoş Geldin</div>
+              <div class="welcome-subtitle">Web sitelerini derinlemesine analiz eder, kodlarını inceler, internetten bilgi toplar ve sorularını yanıtlar.</div>
+              <div class="feature-grid">
+                <div class="feature-card" onclick="document.getElementById('userInput').value='Bir web sitesi analiz etmek istiyorum'; document.getElementById('userInput').focus();">
+                  <i class="fa-solid fa-globe"></i> Site analizi
+                </div>
+                <div class="feature-card" onclick="document.getElementById('userInput').value='Merhaba Mexa!'; document.getElementById('userInput').focus();">
+                  <i class="fa-solid fa-comments"></i> Sohbet
+                </div>
+                <div class="feature-card" onclick="document.getElementById('userInput').value='https://'; document.getElementById('userInput').focus();">
+                  <i class="fa-solid fa-link"></i> Link gönder
+                </div>
+                <div class="feature-card" onclick="document.getElementById('userInput').value='Son analizleri göster'; document.getElementById('userInput').focus();">
+                  <i class="fa-solid fa-list-check"></i> Geçmiş
+                </div>
+              </div>
+            </div>`;
+          localStorage.removeItem('mexa_chat_messages');
+          checkWelcomeScreen();
+        }
+      });
 
       // === SOHBET YÜKLEME ===
       function loadChats() {
@@ -683,9 +880,8 @@
               addMessage('user', m.content, null, false);
             }
           });
-        } else {
-          addMessage('assistant', '👋 Merhaba! Ben **Mexa AI**. Bir web sitesi linki gönder, adım adım detaylı analiz yapayım. İstersen sohbet de edebiliriz.', null, false);
         }
+        checkWelcomeScreen();
       }
 
       function saveMessages() {
@@ -694,14 +890,17 @@
           const bubble = msg.querySelector('.msg-bubble');
           if (!bubble) return;
           const role = msg.classList.contains('user') ? 'user' : 'assistant';
-          const content = bubble.getAttribute('data-raw') || bubble.textContent;
-          messages.push({ role, content });
+          const content = bubble.getAttribute('data-raw') || '';
+          if (content) messages.push({ role, content });
         });
         localStorage.setItem('mexa_chat_messages', JSON.stringify(messages));
       }
 
       // === MESAJ EKLEME ===
       function addMessage(role, content, extraHtml = null, save = true) {
+        // Hoş geldin ekranını gizle
+        welcomeScreen.style.display = 'none';
+
         const div = document.createElement('div');
         div.className = `message ${role}`;
 
@@ -735,6 +934,7 @@
 
       // === YAZIYOR GÖSTERGESİ ===
       function typingIndicator() {
+        welcomeScreen.style.display = 'none';
         const div = document.createElement('div');
         div.className = 'message assistant';
         div.id = 'typingIndicator';
@@ -771,11 +971,10 @@
 
       // === ADIMLI ANALİZ SÜRECİ ===
       async function performSiteAnalysis(url, userQuestion) {
-        // Analiz kartı
         const card = document.createElement('div');
         card.className = 'analysis-card';
         card.innerHTML = `
-          <div class="analysis-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Mexa Derin Tarama</div>
+          <div class="analysis-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Mexa Derin Tarama Başlatıldı</div>
           <div class="step-list">
             <div class="step-item" data-step="connect"><span class="step-dot"><i class="fa-solid fa-wifi"></i></span><span>Siteye bağlanıyor</span></div>
             <div class="step-item" data-step="search"><span class="step-dot"><i class="fa-brands fa-google"></i></span><span>İnternette aranıyor</span></div>
@@ -813,14 +1012,12 @@
         const progressMap = { connect: 10, search: 25, html: 40, css: 55, js: 70, ai: 85 };
 
         try {
-          // 1: Bağlan
           updateStep('connect', 'active');
           progressFill.style.width = '5%';
           await delay(500);
           updateStep('connect', 'completed', 'Siteye bağlanıldı');
           progressFill.style.width = '10%';
 
-          // 2: Google araması (site hakkında bilgi)
           updateStep('search', 'active');
           progressFill.style.width = '15%';
           await delay(400);
@@ -828,7 +1025,6 @@
           updateStep('search', 'completed', searchInfo ? 'İnternet bilgileri toplandı' : 'İnternette arandı');
           progressFill.style.width = '25%';
 
-          // 3: HTML
           updateStep('html', 'active');
           progressFill.style.width = '30%';
           const siteData = await api('/fetch-site', { url });
@@ -836,7 +1032,6 @@
           updateStep('html', 'completed', `index.html okundu (${siteData.content.length} karakter)`);
           progressFill.style.width = '45%';
 
-          // 4: CSS
           updateStep('css', 'active');
           progressFill.style.width = '50%';
           let cssContent = null;
@@ -851,7 +1046,6 @@
           }
           progressFill.style.width = '65%';
 
-          // 5: JS
           updateStep('js', 'active');
           progressFill.style.width = '70%';
           let jsContent = null;
@@ -866,7 +1060,6 @@
           }
           progressFill.style.width = '80%';
 
-          // 6: AI analizi
           updateStep('ai', 'active');
           progressFill.style.width = '85%';
 
@@ -891,16 +1084,15 @@
 
           card.querySelector('.analysis-title').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Analiz Tamamlandı';
 
-          // Sonuç mesajı
           const resultBubble = addMessage('assistant', reply);
 
-          // Aksiyon butonları
           const actionRow = document.createElement('div');
           actionRow.className = 'action-row';
           [
-            { icon: 'fa-css3-alt', label: 'style.css derinlemesine', action: () => analyzeFile(url, '/style.css') },
-            { icon: 'fa-js', label: 'script.js derinlemesine', action: () => analyzeFile(url, '/script.js') },
-            { icon: 'fa-google', label: 'Google\'da ara', action: () => window.open(`https://www.google.com/search?q=${encodeURIComponent(url)}`, '_blank') }
+            { icon: 'fa-css3-alt', label: 'style.css', action: () => analyzeFile(url, '/style.css') },
+            { icon: 'fa-js', label: 'script.js', action: () => analyzeFile(url, '/script.js') },
+            { icon: 'fa-google', label: 'Google\'da ara', action: () => window.open(`https://www.google.com/search?q=${encodeURIComponent(url)}`, '_blank') },
+            { icon: 'fa-copy', label: 'URL kopyala', action: () => { navigator.clipboard.writeText(url); alert('URL kopyalandı!'); } }
           ].forEach(item => {
             const chip = document.createElement('span');
             chip.className = 'action-chip';
@@ -910,7 +1102,6 @@
           });
           resultBubble.appendChild(actionRow);
 
-          // Geçmişe kaydet
           saveToHistory(url, url.replace(/https?:\/\//, '').split('/')[0]);
 
         } catch (err) {
@@ -975,7 +1166,7 @@
           } else {
             const { reply } = await api('/ask-ai', {
               messages: [
-                { role: 'system', content: 'Sen Mexa AI, yardımcı asistansın. Türkçe yanıt ver.' },
+                { role: 'system', content: 'Sen Mexa AI, yardımcı asistansın. Türkçe, samimi ve detaylı yanıt ver.' },
                 { role: 'user', content: raw }
               ]
             });
@@ -995,7 +1186,7 @@
       sendBtn.addEventListener('click', sendMessage);
       userInput.addEventListener('input', () => {
         userInput.style.height = 'auto';
-        userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+        userInput.style.height = Math.min(userInput.scrollHeight, 100) + 'px';
       });
 
       // === BAŞLANGIÇ ===
